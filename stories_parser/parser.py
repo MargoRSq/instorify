@@ -3,34 +3,22 @@ import io
 import requests
 import instagram_private_api
 
-from .schemas import Story
 
-def username_to_pk(api: instagram_private_api.client.Client, username: str)->int:
-    """getting pk(id) of instagram account from username
-
-    Args:
-        api (instagram_private_api.client.Client): api instance
-        username (str): insagram username
-
-    Returns:
-        int: personal pk(id) of instagram account
-    """
-
+def username_to_pk(api: instagram_private_api.client.Client, username: str) -> int: # getting pk(id) of instagram account from username
     search_results = api.search_users(username)
     search_id = search_results['users'][0]['pk']
     return search_id
 
 
-def fetch_following_pk(api: instagram_private_api.client.Client, pk: int)->list[int]:
-    """getting pk's of following accounts
+def pk_to_username(api: instagram_private_api.client.Client, pk: int) -> str: # instagram id(pk) to instagram username
+    search_results = api.user_info(pk)
+    username = search_results['user']['username']
+    
+    return username
 
-    Args:
-        api (instagram_private_api.client.Client): api instance
-        pk (int): pk of account, that you need to get following accounts from
 
-    Returns:
-        list[int]: list of following pks
-    """
+def fetch_following_pk(api: instagram_private_api.client.Client, pk: int) -> list[int]: # fetching "following" accounts
+
     uuid = api.generate_uuid()
     results = api.user_following(pk, uuid)
     followers = results['users']
@@ -42,16 +30,7 @@ def fetch_following_pk(api: instagram_private_api.client.Client, pk: int)->list[
     return list_acconts_pk
 
 
-def fetch_stories(api: instagram_private_api.client.Client, user_pk:int)->list[Story]:
-    """getting stories for list of users instagram accounts
-
-    Args:
-        api (instagram_private_api.client.Client): api instance
-        users (int): account pk
-
-    Returns:
-        list[Story]: list of stories dictionaries
-    """
+def fetch_stories(api: instagram_private_api.client.Client, user_pk:int) -> list[dict]: # fetching list of user's stories
 
     list_of_stories = []
     stories = api.user_story_feed(user_pk)
@@ -59,30 +38,41 @@ def fetch_stories(api: instagram_private_api.client.Client, user_pk:int)->list[S
         list_stories_full = stories['reel']['items']
 
         for i in range(len(list_stories_full)):
+            
+            story_dict = list_stories_full[i]
 
-            if list_stories_full[i]['media_type'] == 1:
-                
-                image_url = list_stories_full[i]['image_versions2']['candidates'][0]['url']
-                image = requests.get(image_url)
-                image_bytes = io.BytesIO(image.content)
-                
-                image_stories_object = {'type': 'image', 'url': image_url, 'file_obj': image_bytes.read()}
-                list_of_stories.append(image_stories_object)
-                # with open(f'stories/{user_pk}-{i}.png', 'wb+') as f: for local save
-                #     f.write(image_bytes.read())
+            if story_dict['audience']:
+                audience = story_dict['audience']
+            else:
+                audience = None
 
-            if list_stories_full[i]['media_type'] == 2:
+            content_type = list_stories_full[i]['media_type'] 
+            
+            original_height = list_stories_full[i]['original_height']
+            original_width = list_stories_full[i]['original_width']
+            for obj in story_dict['image_versions2']['candidates']:
                 
-                video_url = list_stories_full[i]['video_versions'][0]['url']
+                height = obj['height']
+                width = obj['width']
+                if height == original_height and width == original_width:
+                    image_url = obj['url']
                 
-                # with open(f'stories/{user_pk}-{i}.mp4','wb') as f: for local save
-                r = requests.get(video_url, stream=True)
-                video_bytes = io.BytesIO()
-                for chunk in r.iter_content(chunk_size = 1024*1024): 
-                    if chunk:
-                        video_bytes.write(chunk)
-                            # f.write(chunk) 
-                video_stories_object = {'type': 'video', 'url': video_url, 'file_obj': video_bytes.read()}
-                list_of_stories.append(video_stories_object)
+                elif height < original_height and width < original_width:
+                    preview_url = obj['url']
+
+            pk = story_dict['pk']
+            
+            created_at = story_dict['taken_at']
+            original_created_at = story_dict['imported_taken_at']
+            
+            story_object = {'type': content_type,
+                                    'id': pk, 
+                                    'audience': audience,
+                                    'url': image_url, 
+                                    'preview_url': preview_url, 
+                                    'created_at': created_at,
+                                    'original_created_at': original_created_at}
+
+            list_of_stories.append(story_object)
 
     return list_of_stories
