@@ -1,11 +1,12 @@
 import instagram_private_api
 
+import os
+
 
 def username_to_pk(api: instagram_private_api.client.Client, username: str) -> int: # getting pk(id) of instagram account from username
-    search_results = api.search_users(username)
-    search_id = search_results['users'][0]['pk']
+    search_results = api.username_info(username)
+    search_id = search_results['user']['pk']
     return search_id
-
 
 def pk_to_username(api: instagram_private_api.client.Client, pk: int) -> str: # instagram id(pk) to instagram username
     search_results = api.user_info(pk)
