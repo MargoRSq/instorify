@@ -1,6 +1,3 @@
-import io
-
-import requests
 import instagram_private_api
 
 
