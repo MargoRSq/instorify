@@ -38,37 +38,25 @@ def fetch_stories(api: instagram_private_api.client.Client, user_pk:int) -> list
             
             story_dict = list_stories_full[i]
 
-            if story_dict['audience']:
-                audience = story_dict['audience']
-            else:
-                audience = None
+            story_object = {}
 
-            content_type = list_stories_full[i]['media_type'] 
-            
-            original_height = list_stories_full[i]['original_height']
-            original_width = list_stories_full[i]['original_width']
-            for obj in story_dict['image_versions2']['candidates']:
-                
-                height = obj['height']
-                width = obj['width']
-                if height == original_height and width == original_width:
-                    image_url = obj['url']
-                
-                elif height < original_height and width < original_width:
-                    preview_url = obj['url']
+            if 'audience' in story_dict:
+                story_object['audience'] = story_dict['audience']
+    
+            story_object['type'] = story_dict['media_type'] 
 
-            pk = story_dict['pk']
+            story_object['height'] = story_dict['original_height']
+            story_object['width'] = story_dict['original_width']
+                
+            story_object['image_url'] = story_dict['image_versions2']['candidates'][0]['url']
+            story_object['preview_url'] = story_dict['image_versions2']['candidates'][1]['url']
+
+            story_object['id'] = story_dict['pk']
             
-            created_at = story_dict['taken_at']
-            original_created_at = story_dict['imported_taken_at']
+            story_object['created_at'] = story_dict['taken_at']
             
-            story_object = {'type': content_type,
-                                    'id': pk, 
-                                    'audience': audience,
-                                    'url': image_url, 
-                                    'preview_url': preview_url, 
-                                    'created_at': created_at,
-                                    'original_created_at': original_created_at}
+            if 'imported_taken_at' in story_dict:
+                story_object['original_created_at'] = story_dict['imported_taken_at']
 
             list_of_stories.append(story_object)
 
