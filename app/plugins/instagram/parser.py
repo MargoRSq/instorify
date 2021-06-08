@@ -1,7 +1,5 @@
 import instagram_private_api
 
-import os
-
 
 def username_to_pk(api: instagram_private_api.client.Client, username: str) -> int: # getting pk(id) of instagram account from username
     search_results = api.username_info(username)
@@ -38,11 +36,14 @@ def fetch_stories(api: instagram_private_api.client.Client, user_pk:int) -> list
         for i in range(len(list_stories_full)):
             
             story_dict = list_stories_full[i]
-
             story_object = {}
 
+            # optional params
             if 'audience' in story_dict:
                 story_object['audience'] = story_dict['audience']
+                        
+            if 'imported_taken_at' in story_dict:
+                story_object['original_created_at'] = story_dict['imported_taken_at']
     
             story_object['type'] = story_dict['media_type'] 
 
@@ -55,9 +56,7 @@ def fetch_stories(api: instagram_private_api.client.Client, user_pk:int) -> list
             story_object['id'] = story_dict['pk']
             
             story_object['created_at'] = story_dict['taken_at']
-            
-            if 'imported_taken_at' in story_dict:
-                story_object['original_created_at'] = story_dict['imported_taken_at']
+
 
             list_of_stories.append(story_object)
 

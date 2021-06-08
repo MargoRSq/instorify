@@ -1,4 +1,5 @@
 from fastapi import APIRouter
+
 from api.routes.inst import stories, posts, users
 
 router = APIRouter()

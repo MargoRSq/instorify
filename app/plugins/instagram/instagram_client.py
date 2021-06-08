@@ -1,27 +1,17 @@
 import os
-
 import json
 import codecs
-import datetime
-import os.path
 
-try:
-    from instagram_private_api import (
-        Client, ClientError, ClientLoginError,
-        ClientCookieExpiredError, ClientLoginRequiredError,
-        __version__ as client_version)
-except ImportError:
-    import sys
-    sys.path.append(os.path.join(os.path.dirname(__file__), '..'))
-    from instagram_private_api import (
-        Client, ClientError, ClientLoginError,
-        ClientCookieExpiredError, ClientLoginRequiredError,
-        __version__ as client_version)
+from instagram_private_api import (
+    Client, ClientError, ClientLoginError,
+    ClientCookieExpiredError, ClientLoginRequiredError,
+    __version__ as client_version)
 
 
 PASS = os.environ['PASS']
 LOGIN = os.environ['LOGIN']
-SETTINGS_FILE = os.environ['SETTINGS_FILE']
+COOCKIE_PATH = '../cache/instagram_cookie.json'
+
 
 def to_json(python_object):
     if isinstance(python_object, bytes):
@@ -36,55 +26,40 @@ def from_json(json_object):
     return json_object
 
 
-def onlogin_callback(api, new_settings_file):
+def handle_login():
     cache_settings = api.settings
-    with open(new_settings_file, 'w') as outfile:
+    with open(COOCKIE_PATH, 'w') as outfile:
         json.dump(cache_settings, outfile, default=to_json)
-        print('SAVED: {0!s}'.format(new_settings_file))
-
 
 try:
 
-    settings_file = SETTINGS_FILE
-    if not os.path.isfile(settings_file):
-        # settings file does not exist
-        print('Unable to find file: {0!s}'.format(settings_file))
+    if not os.path.isfile(COOCKIE_PATH):
 
         # login new
         api = Client(
             LOGIN, PASS,
-            on_login=lambda x: onlogin_callback(x, SETTINGS_FILE))
+            on_login=lambda x: handle_login(x, COOCKIE_PATH))
     else:
-        with open(settings_file) as file_data:
+        with open(COOCKIE_PATH) as file_data:
             cached_settings = json.load(file_data, object_hook=from_json)
-        print('Reusing settings: {0!s}'.format(settings_file))
 
-        device_id = cached_settings.get('device_id')
         # reuse auth settings
         api = Client(
             LOGIN, PASS,
             settings=cached_settings)
 
 except (ClientCookieExpiredError, ClientLoginRequiredError) as e:
-    print('ClientCookieExpiredError/ClientLoginRequiredError: {0!s}'.format(e))
-
     # Login expired
     # Do relogin but use default ua, keys and such
+    device_id = cached_settings.get('device_id')
     api = Client(
         LOGIN, PASS,
         device_id=device_id,
-        on_login=lambda x: onlogin_callback(x, SETTINGS_FILE))
+        on_login=handle_login)
 
 except ClientLoginError as e:
-    print('ClientLoginError {0!s}'.format(e))
     exit(9)
 except ClientError as e:
-    print('ClientError {0!s} (Code: {1:d}, Response: {2!s})'.format(e.msg, e.code, e.error_response))
     exit(9)
 except Exception as e:
-    print('Unexpected Exception: {0!s}'.format(e))
     exit(99)
-
-# Show when login expires
-cookie_expiry = api.cookie_jar.auth_expires
-print('Cookie Expiry: {0!s}'.format(datetime.datetime.fromtimestamp(cookie_expiry).strftime('%Y-%m-%dT%H:%M:%SZ')))
