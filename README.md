@@ -17,7 +17,9 @@
 1. [Deploy](#deploy)
 
 ## Links
+
 * **TODO**
+
 ### Site urls:
 
 * **TODO**
@@ -31,16 +33,21 @@
 * **TODO**
 
 ## Start developing
+
 * **TODO**
+
 ## Scripts commands
+
 * **TODO**
+
 ## Structure
 
-### The project structure has both flat and [fractal structure](https://github.com/davezuko/react-redux-starter-kit/wiki/Fractal-Project-Structure)s.
 * **TODO**
 
 ## Developing steps
+
 * **TODO**
+
 ### Branches
 
 The process of adding new functionality begins by creating a new branch for development, branching from the `develop` branch. The name prefix for the branch is selected based on the type of added functionality:

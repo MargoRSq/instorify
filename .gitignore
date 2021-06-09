@@ -1,6 +1,14 @@
+# Byte-compiled / optimized / DLL files
+__pycache__/
 
+# VS code cache
 .vscode/
 
-stories/
-
+# Local env files
 .env
+
+# misc 
+.DS_Store
+
+# Cache for plugins and api
+cache/
