@@ -1,7 +1,7 @@
 from fastapi import APIRouter, Body, Depends, HTTPException
 
 from plugins.instagram.instagram_client import api as instagram_api
-from plugins.instagram.parser import (username_to_pk, pk_to_username, fetch_following_pk, fetch_stories)
+from plugins.instagram.parser import (fetch_stories, stories_count)
 
 router = APIRouter()
 
@@ -12,8 +12,7 @@ def fetch_all_stories(username: str):
 
 @router.get('/{username}/count')
 def count_stories(username: str):
-    return {'data': len(fetch_stories(instagram_api, username))}
-
+    return {'data': stories_count(instagram_api, username)}
 
 @router.get('/{username}/{index_story}')
 def fetch_one_story(username: str, index_story: int):

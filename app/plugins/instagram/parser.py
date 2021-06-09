@@ -64,8 +64,5 @@ def fetch_stories(api: instagram_private_api.client.Client, username: str) -> li
 
     return list_of_stories
 
-
-def fetch_highlights(api: instagram_private_api.client.Client, username: str) -> list[dict]:
-    user_pk = username_to_pk(api, username)
-    all_highlights = api.highlights_user_feed(user_pk)
-    print()
+def stories_count(api: instagram_private_api.client.Client, username: str) -> int:
+    return len(fetch_stories(api, username))
