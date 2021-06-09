@@ -48,7 +48,6 @@ def fetch_following_pk(pk: int) -> list[int]:
 
     return list_acconts_pk
 
-
 def get_stories_raw(username: str) -> list[dict]:
     user_pk = username_to_pk(username)
 
@@ -58,7 +57,6 @@ def get_stories_raw(username: str) -> list[dict]:
         return []
 
     return stories['reel']['items']
-
 
 def fetch_stories(username: str) -> list[dict]:
 
@@ -72,12 +70,10 @@ def fetch_stories(username: str) -> list[dict]:
 
     return list_of_stories
 
-
 def fetch_stories_count(username: str) -> int:
     return len(get_stories_raw(username))
 
-
-def fetch_one_story_by_index(username: str, index: int) -> list[dict] or None:
+def fetch_one_story_by_index(username: str, index: int) -> dict or None:
     stories = get_stories_raw(username)
 
     story_by_index = stories[index - 1]
