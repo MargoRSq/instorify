@@ -8,15 +8,17 @@ router = APIRouter()
 
 @router.get('/{username}')
 def fetch_all_stories(username: str):
-    user_pk = username_to_pk(instagram_api, username)
-    return {'data': fetch_stories(instagram_api, user_pk)}
+    return {'data': fetch_stories(instagram_api, username)}
+
+@router.get('/{username}/count')
+def count_stories(username: str):
+    return {'data': len(fetch_stories(instagram_api, username))}
 
 
 @router.get('/{username}/{index_story}')
 def fetch_one_story(username: str, index_story: int):
-    user_pk = username_to_pk(instagram_api, username)
 
-    stories = fetch_stories(instagram_api, user_pk)
+    stories = fetch_stories(instagram_api, username)
     stories_count = len(stories)
     if stories_count < index_story:
         return HTTPException(404)
