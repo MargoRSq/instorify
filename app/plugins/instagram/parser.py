@@ -1,6 +1,6 @@
 import instagram_private_api
 
-def stories_raw_to_object(stories: dict) -> dict:
+def stories_raw_to_object(story_dict: dict) -> dict:
     story_object = {}
 
     # optional params
@@ -27,15 +27,12 @@ def stories_raw_to_object(stories: dict) -> dict:
 
 def username_to_pk(api: instagram_private_api.client.Client, username: str) -> int: # getting pk(id) of instagram account from username
     search_results = api.username_info(username)
-    search_id = search_results['user']['pk']
-    return search_id
+    return search_results['user']['pk']
 
 
 def pk_to_username(api: instagram_private_api.client.Client, pk: int) -> str: # instagram id(pk) to instagram username
     search_results = api.user_info(pk)
-    username = search_results['user']['username']
-
-    return username
+    return search_results['user']['username']
 
 
 def fetch_following_pk(api: instagram_private_api.client.Client, pk: int) -> list[int]: # fetching "following" accounts
@@ -62,10 +59,11 @@ def get_stories_raw(api: instagram_private_api.client.Client, username: str) -> 
     return stories['reel']['items']
 
 
-def fetch_stories(api: instagram_private_api.client.Client, username: str) -> list[dict] | None:
+def fetch_stories(api: instagram_private_api.client.Client, username: str) -> list[dict]:
 
     stories = get_stories_raw(api, username)
 
+    list_of_stories = []
     for i in range(len(stories)):
         story_object = stories_raw_to_object(stories[i])
 
@@ -78,14 +76,14 @@ def fetch_stories_count(api: instagram_private_api.client.Client, username: str)
     return len(get_stories_raw(api, username))
 
 
-def fetch_one_story_by_index(api: instagram_private_api.client.Client, username: str, index: int) -> list[dict]:
+def fetch_one_story_by_index(api: instagram_private_api.client.Client, username: str, index: int) -> list[dict] or None:
     stories = get_stories_raw(api, username)
 
-    story_by_index = list_stories_full[index - 1]
+    story_by_index = stories[index - 1]
 
     if (story_by_index == None):
         return None
 
-    story_object = stories_raw_to_object(stories[i])
+    story_object = stories_raw_to_object(stories[index])
 
     return story_object
