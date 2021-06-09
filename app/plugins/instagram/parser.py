@@ -84,6 +84,6 @@ def fetch_one_story_by_index(api: instagram_private_api.client.Client, username:
     if (story_by_index == None):
         return None
 
-    story_object = stories_raw_to_object(stories[index])
+    story_object = stories_raw_to_object(story_by_index)
 
     return story_object

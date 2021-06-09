@@ -16,7 +16,7 @@ def count_stories(username: str):
 
 @router.get('/{username}/{index_story}')
 def fetch_one_story(username: str, index_story: int):
-    story = fetch_one_story_by_index(username, index_story)
+    story = fetch_one_story_by_index(instagram_api, username, index_story)
 
     if (story == None):
         return HTTPException(404)
