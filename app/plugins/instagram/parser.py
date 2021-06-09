@@ -26,7 +26,9 @@ def fetch_following_pk(api: instagram_private_api.client.Client, pk: int) -> lis
     return list_acconts_pk
 
 
-def fetch_stories(api: instagram_private_api.client.Client, user_pk:int) -> list[dict]: # fetching list of user's stories
+def fetch_stories(api: instagram_private_api.client.Client, username: str) -> list[dict]: # fetching list of user's stories
+
+    user_pk = username_to_pk(api, username)
 
     list_of_stories = []
     stories = api.user_story_feed(user_pk)
@@ -61,3 +63,9 @@ def fetch_stories(api: instagram_private_api.client.Client, user_pk:int) -> list
             list_of_stories.append(story_object)
 
     return list_of_stories
+
+
+def fetch_highlights(api: instagram_private_api.client.Client, username: str) -> list[dict]:
+    user_pk = username_to_pk(api, username)
+    all_highlights = api.highlights_user_feed(user_pk)
+    print()

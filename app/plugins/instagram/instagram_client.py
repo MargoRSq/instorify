@@ -38,7 +38,7 @@ try:
         # login new
         api = Client(
             LOGIN, PASS,
-            on_login=lambda x: handle_login(x, COOCKIE_PATH))
+            on_login=handle_login)
     else:
         with open(COOCKIE_PATH) as file_data:
             cached_settings = json.load(file_data, object_hook=from_json)
