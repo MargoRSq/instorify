@@ -1,4 +1,5 @@
-import instagram_private_api
+from plugins.instagram.instagram_client import api
+
 
 def stories_raw_to_object(story_dict: dict) -> dict:
     story_object = {}
@@ -24,18 +25,18 @@ def stories_raw_to_object(story_dict: dict) -> dict:
 
     return story_object
 
-
-def username_to_pk(api: instagram_private_api.client.Client, username: str) -> int: # getting pk(id) of instagram account from username
+# getting pk(id) of instagram account from username
+def username_to_pk(username: str) -> int: 
     search_results = api.username_info(username)
     return search_results['user']['pk']
 
-
-def pk_to_username(api: instagram_private_api.client.Client, pk: int) -> str: # instagram id(pk) to instagram username
+# instagram id(pk) to instagram username
+def pk_to_username(pk: int) -> str: 
     search_results = api.user_info(pk)
     return search_results['user']['username']
 
-
-def fetch_following_pk(api: instagram_private_api.client.Client, pk: int) -> list[int]: # fetching "following" accounts
+# fetching "following" accounts
+def fetch_following_pk(pk: int) -> list[int]: 
 
     uuid = api.generate_uuid()
     results = api.user_following(pk, uuid)
@@ -48,8 +49,8 @@ def fetch_following_pk(api: instagram_private_api.client.Client, pk: int) -> lis
     return list_acconts_pk
 
 
-def get_stories_raw(api: instagram_private_api.client.Client, username: str) -> list[dict]:
-    user_pk = username_to_pk(api, username)
+def get_stories_raw(username: str) -> list[dict]:
+    user_pk = username_to_pk(username)
 
     stories = api.user_story_feed(user_pk)
 
@@ -59,9 +60,9 @@ def get_stories_raw(api: instagram_private_api.client.Client, username: str) -> 
     return stories['reel']['items']
 
 
-def fetch_stories(api: instagram_private_api.client.Client, username: str) -> list[dict]:
+def fetch_stories(username: str) -> list[dict]:
 
-    stories = get_stories_raw(api, username)
+    stories = get_stories_raw(username)
 
     list_of_stories = []
     for i in range(len(stories)):
@@ -72,12 +73,12 @@ def fetch_stories(api: instagram_private_api.client.Client, username: str) -> li
     return list_of_stories
 
 
-def fetch_stories_count(api: instagram_private_api.client.Client, username: str) -> int:
-    return len(get_stories_raw(api, username))
+def fetch_stories_count(username: str) -> int:
+    return len(get_stories_raw(username))
 
 
-def fetch_one_story_by_index(api: instagram_private_api.client.Client, username: str, index: int) -> list[dict] or None:
-    stories = get_stories_raw(api, username)
+def fetch_one_story_by_index(username: str, index: int) -> list[dict] or None:
+    stories = get_stories_raw(username)
 
     story_by_index = stories[index - 1]
 
