@@ -54,3 +54,34 @@ def fetch_highlights(username: str) -> list:
         objects[i].update(items)
 
     return objects
+
+
+def fetch_highlight_by_id(id: int) -> list:
+
+    highlight_reel_media = web_api.highlight_reel_media([id])
+    username = highlight_reel_media['data']['reels_media'][0]['owner']['username']
+
+    
+    user_pk = username_to_pk(username)
+    all_highlights = private_api.highlights_user_feed(user_pk)
+
+    highlight_objects = []
+    highlight_id_arr = []
+    for highlight_raw in all_highlights['tray']:
+        highlight_id = highlight_raw['id'].split(':')[1]
+        highlight_id_arr.append(highlight_id)
+        
+        if id == int(highlight_id):
+            content_info = {'id': int(highlight_id),
+                            'title': highlight_raw['title'], 
+                            'created_at': highlight_raw['created_at'],
+                            'media_count': highlight_raw['media_count']}
+            highlight_objects.append(content_info)
+
+    
+    for i, highlight in enumerate(highlight_reel_media['data']['reels_media']):
+        items = {'items': highlight_raw_to_object(highlight['items'])}
+        
+        highlight_objects[i].update(items)
+
+    return highlight_objects

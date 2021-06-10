@@ -58,10 +58,11 @@ def fetch_stories_count(username: str) -> int:
 
 def fetch_one_story_by_index(username: str, index: int) -> dict or None:
     stories = get_stories_raw(username)
-
-    story_by_index = stories[index - 1]
-    if (story_by_index == None):
+    
+    if len(stories) < index:
         return None
+    else:
+        story_by_index = stories[index - 1]
 
     story_object = stories_raw_to_object(story_by_index)
 
