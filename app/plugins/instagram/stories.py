@@ -1,5 +1,5 @@
-from plugins.instagram.instagram_client import api
-from plugins.instagram.utils import MediaType
+from plugins.instagram.instagram_client import private_api
+from plugins.instagram.utils import MediaType, username_to_pk, pk_to_username, fetch_following_pk
 
 
 def stories_raw_to_object(story_dict: dict) -> dict:
@@ -30,33 +30,11 @@ def stories_raw_to_object(story_dict: dict) -> dict:
 
     return story_object
 
-# getting pk(id) of instagram account from username
-def username_to_pk(username: str) -> int: 
-    search_results = api.username_info(username)
-    return search_results['user']['pk']
-
-# instagram id(pk) to instagram username
-def pk_to_username(pk: int) -> str: 
-    search_results = api.user_info(pk)
-    return search_results['user']['username']
-
-# fetching "following" accounts
-def fetch_following_pk(pk: int) -> list[int]: 
-
-    uuid = api.generate_uuid()
-    results = api.user_following(pk, uuid)
-    followers = results['users']
-
-    list_acconts_pk = []
-    for human in followers:
-        list_acconts_pk.append(human['pk'])
-
-    return list_acconts_pk
 
 def get_stories_raw(username: str) -> list[dict]:
     user_pk = username_to_pk(username)
 
-    stories = api.user_story_feed(user_pk)
+    stories = private_api.user_story_feed(user_pk)
 
     if stories['reel'] == None:
         return []
