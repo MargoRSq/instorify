@@ -5,50 +5,52 @@ from plugins.instagram.utils import username_to_pk
 
 def highlight_raw_to_object(items: dict) -> dict:
     
-    highlight_items = []
+    hl_items = []
     for item in items:
-        highlight_item = {}
-        highlight_item['height'] = item['dimensions']['height']
-        highlight_item['width'] = item['dimensions']['width']
-        highlight_item['taken_at'] = item['taken_at_timestamp']
-        highlight_item['id'] = int(item['id'])
+        heigh = item['dimensions']['height']
+        width = item['dimensions']['width']
+        hl_item = {}
+        hl_item['height'] = heigh
+        hl_item['width'] = width
+        hl_item['taken_at'] = item['taken_at_timestamp']
+        hl_item['id'] = int(item['id'])
 
         if item['is_video']:
-            highlight_item['content_url'] = item['video_resources'][0]['src']
-            highlight_item['type'] = MediaTypes.VIDEO.value
-            highlight_item['duration'] = item['video_duration']
+            hl_item['content_url'] = item['video_resources'][0]['src']
+            hl_item['type'] = MediaTypes.VIDEO.value
+            hl_item['duration'] = item['video_duration']
         
         else:
             for image in item['display_resources']:
-                if highlight_item['height'] == image['config_height'] and highlight_item['width'] == image['config_width']:
-                    highlight_item['content_url'] = image['src']
-                    highlight_item['type'] = MediaTypes.PHOTO.value
+                if heigh == image['config_height'] and width == image['config_width']:
+                    hl_item['content_url'] = image['src']
+                    hl_item['type'] = MediaTypes.PHOTO.value
 
-        highlight_items.append(highlight_item)
+        hl_items.append(hl_item)
 
-    return highlight_items
+    return hl_items
 
 def fetch_highlights(username: str) -> list:
     
     user_pk = username_to_pk(username)
     all_highlights = private_api.highlights_user_feed(user_pk)
 
-    highlight_objects = []
-    highlight_id_arr = []
-    for highlight_raw in all_highlights['tray']:
-        highlight_id = highlight_raw['id'].split(':')[1]
-        highlight_id_arr.append(highlight_id)
+    hl_objects = []
+    hl_id_arr = []
+    for hl_raw in all_highlights['tray']:
+        hl_id = hl_raw['id'].split(':')[1]
+        hl_id_arr.append(hl_id)
         
-        content_info = {'id': int(highlight_id),
-                        'title': highlight_raw['title'], 
-                        'created_at': highlight_raw['created_at'],
-                        'media_count': highlight_raw['media_count']}
-        highlight_objects.append(content_info)
+        content_info = {'id': int(hl_id),
+                        'title': hl_raw['title'], 
+                        'created_at': hl_raw['created_at'],
+                        'media_count': hl_raw['media_count']}
+        hl_objects.append(content_info)
 
-    highlight_reel_media = web_api.highlight_reel_media(highlight_id_arr)
-    for i, highlight in enumerate(highlight_reel_media['data']['reels_media']):
-        items = {'items': highlight_raw_to_object(highlight['items'])}
+    hl_reel_media = web_api.highlight_reel_media(hl_id_arr)
+    for i, hl in enumerate(hl_reel_media['data']['reels_media']):
+        items = {'items': highlight_raw_to_object(hl['items'])}
         
-        highlight_objects[i].update(items)
+        hl_objects[i].update(items)
 
-    return highlight_objects
+    return hl_objects
