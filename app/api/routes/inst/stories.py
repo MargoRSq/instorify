@@ -1,7 +1,6 @@
 from fastapi import APIRouter, Body, Depends, HTTPException
-
-
-from plugins.instagram.stories import (fetch_stories, fetch_stories_count, fetch_one_story_by_index)
+from plugins.instagram.stories import (fetch_one_story_by_index, fetch_stories,
+                                       fetch_stories_count)
 
 router = APIRouter()
 

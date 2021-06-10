@@ -1,5 +1,6 @@
 from plugins.instagram.instagram_client import private_api
-from plugins.instagram.utils import MediaType, username_to_pk, pk_to_username, fetch_following_pk
+from plugins.instagram.utils import (MediaType, fetch_following_pk,
+                                     pk_to_username, username_to_pk)
 
 
 def stories_raw_to_object(story_dict: dict) -> dict:

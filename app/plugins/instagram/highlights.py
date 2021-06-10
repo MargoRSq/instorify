@@ -1,5 +1,6 @@
+from instagram_private_api import MediaTypes
 from plugins.instagram.instagram_client import private_api, web_api
-from plugins.instagram.utils import MediaType, username_to_pk
+from plugins.instagram.utils import username_to_pk
 
 
 def highlight_raw_to_object(items: dict) -> dict:
@@ -14,14 +15,14 @@ def highlight_raw_to_object(items: dict) -> dict:
 
         if item['is_video']:
             highlight_item['content_url'] = item['video_resources'][0]['src']
-            highlight_item['type'] = MediaType.VIDEO.value
+            highlight_item['type'] = MediaTypes.VIDEO.value
             highlight_item['duration'] = item['video_duration']
         
         else:
             for image in item['display_resources']:
                 if highlight_item['height'] == image['config_height'] and highlight_item['width'] == image['config_width']:
                     highlight_item['content_url'] = image['src']
-                    highlight_item['type'] = MediaType.PHOTO.value
+                    highlight_item['type'] = MediaTypes.PHOTO.value
 
         highlight_items.append(highlight_item)
 
