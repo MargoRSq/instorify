@@ -6,7 +6,7 @@ class MediaType(Enum):
 
     PHOTO = 1       
     VIDEO = 2
-    CAROUSEL = 8    
+    CAROUSEL = 8
 
 # getting pk(id) of instagram account from username
 def username_to_pk(username: str) -> int:

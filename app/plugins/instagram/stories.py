@@ -30,7 +30,6 @@ def stories_raw_to_object(story_dict: dict) -> dict:
 
     return story_object
 
-
 def get_stories_raw(username: str) -> list[dict]:
     user_pk = username_to_pk(username)
 
