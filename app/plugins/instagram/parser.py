@@ -12,12 +12,16 @@ def stories_raw_to_object(story_dict: dict) -> dict:
         story_object['original_created_at'] = story_dict['imported_taken_at']
 
     story_object['type'] = story_dict['media_type']
+    
+    if story_object['type'] == MediaType.PHOTO.value: 
+        story_object['content_url'] = story_dict['image_versions2']['candidates'][0]['url']
+    
+    elif story_object['type'] == MediaType.VIDEO.value:
+        story_object['content_url'] = story_dict['video_versions'][0]['url']
+
 
     story_object['height'] = story_dict['original_height']
     story_object['width'] = story_dict['original_width']
-
-    story_object['image_url'] = story_dict['image_versions2']['candidates'][0]['url']
-    story_object['preview_url'] = story_dict['image_versions2']['candidates'][1]['url']
 
     story_object['id'] = story_dict['pk']
 
@@ -77,7 +81,6 @@ def fetch_one_story_by_index(username: str, index: int) -> dict or None:
     stories = get_stories_raw(username)
 
     story_by_index = stories[index - 1]
-
     if (story_by_index == None):
         return None
 
