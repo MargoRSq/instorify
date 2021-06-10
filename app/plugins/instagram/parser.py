@@ -1,4 +1,5 @@
 from plugins.instagram.instagram_client import api
+from plugins.instagram.utils import MediaType
 
 
 def stories_raw_to_object(story_dict: dict) -> dict:
