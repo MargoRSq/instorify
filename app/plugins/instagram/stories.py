@@ -1,5 +1,7 @@
-from plugins.instagram.instagram_client import private_api
-from plugins.instagram.utils import MediaType, username_to_pk
+from plugins.instagram.clients.private_api import private_api
+from plugins.instagram.utils import username_to_pk
+
+from instagram_private_api import MediaTypes
 
 
 def stories_raw_to_object(story_dict: dict) -> dict:
@@ -14,10 +16,10 @@ def stories_raw_to_object(story_dict: dict) -> dict:
 
     object['type'] = story_dict['media_type']
     
-    if object['type'] == MediaType.PHOTO.value: 
+    if object['type'] == MediaTypes.PHOTO: 
         object['content_url'] = story_dict['image_versions2']['candidates'][0]['url']
     
-    elif object['type'] == MediaType.VIDEO.value:
+    elif object['type'] == MediaTypes.VIDEO:
         object['content_url'] = story_dict['video_versions'][0]['url']
 
 

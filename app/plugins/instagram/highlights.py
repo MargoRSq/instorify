@@ -1,6 +1,7 @@
 from instagram_private_api import MediaTypes
 
-from plugins.instagram.instagram_client import private_api, web_api
+from plugins.instagram.clients.private_api import private_api
+from plugins.instagram.clients.web_api import web_api
 from plugins.instagram.utils import username_to_pk
 
 
@@ -45,14 +46,16 @@ def fetch_highlights(username: str) -> list:
         content_info = {'id': int(hl_id),
                         'title': raw['title'], 
                         'created_at': raw['created_at'],
-                        'media_count': raw['media_count']}
+                        'media_count': raw['media_count'],
+                        'cover': raw['cover_media']['cropped_image_version']['url']}
         objects.append(content_info)
 
     reel_media = web_api.highlight_reel_media(hl_ids)
-    for i, highlight in enumerate(reel_media['data']['reels_media']):
-        items = {'items': highlight_raw_to_object(highlight['items'])}
+    # print(reel_media)
+    # for i, highlight in enumerate(reel_media['data']['reels_media']):
+    #     items = {'items': highlight_raw_to_object(highlight['items'])}
         
-        objects[i].update(items)
+    #     objects[i].update(items)
 
     return objects
 
@@ -77,7 +80,6 @@ def fetch_highlight_by_id(id: int) -> list:
                             'created_at': raw['created_at'],
                             'media_count': raw['media_count']}
             objects.append(content_info)
-
     
     for i, highlight in enumerate(highlight_reel_media['data']['reels_media']):
         items = {'items': highlight_raw_to_object(highlight['items'])}

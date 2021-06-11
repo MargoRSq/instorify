@@ -1,6 +1,6 @@
 from enum import Enum
 
-from plugins.instagram.instagram_client import private_api
+from plugins.instagram.clients.private_api import private_api
 
 
 # getting pk(id) of instagram account from username
