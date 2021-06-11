@@ -1,35 +1,34 @@
 from plugins.instagram.instagram_client import private_api
-from plugins.instagram.utils import (MediaType, fetch_following_pk,
-                                     pk_to_username, username_to_pk)
+from plugins.instagram.utils import MediaType, username_to_pk
 
 
 def stories_raw_to_object(story_dict: dict) -> dict:
-    story_object = {}
+    object = {}
 
     # optional params
     if 'audience' in story_dict:
-        story_object['audience'] = story_dict['audience']
+        object['audience'] = story_dict['audience']
 
     if 'imported_taken_at' in story_dict:
-        story_object['original_created_at'] = story_dict['imported_taken_at']
+        object['original_created_at'] = story_dict['imported_taken_at']
 
-    story_object['type'] = story_dict['media_type']
+    object['type'] = story_dict['media_type']
     
-    if story_object['type'] == MediaType.PHOTO.value: 
-        story_object['content_url'] = story_dict['image_versions2']['candidates'][0]['url']
+    if object['type'] == MediaType.PHOTO.value: 
+        object['content_url'] = story_dict['image_versions2']['candidates'][0]['url']
     
-    elif story_object['type'] == MediaType.VIDEO.value:
-        story_object['content_url'] = story_dict['video_versions'][0]['url']
+    elif object['type'] == MediaType.VIDEO.value:
+        object['content_url'] = story_dict['video_versions'][0]['url']
 
 
-    story_object['height'] = story_dict['original_height']
-    story_object['width'] = story_dict['original_width']
+    object['height'] = story_dict['original_height']
+    object['width'] = story_dict['original_width']
 
-    story_object['id'] = story_dict['pk']
+    object['id'] = story_dict['pk']
 
-    story_object['created_at'] = story_dict['taken_at']
+    object['created_at'] = story_dict['taken_at']
 
-    return story_object
+    return object
 
 def get_stories_raw(username: str) -> list[dict]:
     user_pk = username_to_pk(username)
