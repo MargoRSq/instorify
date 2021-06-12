@@ -47,33 +47,37 @@ class WebApiClient(instagram_web_api.Client):
         
         return login_res
 
+def auth_without_settings():
+    return WebApiClient(
+                username=LOGIN, 
+                password=PASS, 
+                on_login=lambda x: handle_login(x, COOCKIE_PATH_WEB))
+
+
+def auth_with_settings(settings):
+    return WebApiClient(
+                username=LOGIN, 
+                password=PASS, 
+                settings=settings)          
 
 try:
 
     if not os.path.isfile(COOCKIE_PATH_WEB):
-        web_api = WebApiClient(
-            username=LOGIN, 
-            password=PASS, 
-            on_login=lambda x: handle_login(x, COOCKIE_PATH_WEB))
+        web_api = auth_without_settings()
     else:  
         with open(COOCKIE_PATH_WEB) as file_data:
             cached_settings_web = json.load(file_data, object_hook=from_json)
             # reuse auth settings
-            web_api = WebApiClient(
-                        username=LOGIN, 
-                        password=PASS, 
-                        settings=cached_settings_web)
+            web_api = auth_with_settings(cached_settings_web)
         
 except (ClientCookieExpiredError, ClientLoginRequiredError) as e:
     # Login expired
-    web_api = WebApiClient(
-            username=LOGIN, 
-            password=PASS, 
-            on_login=lambda x: handle_login(x, COOCKIE_PATH_WEB))
+    web_api = auth_without_settings()
 
 except ClientLoginError as e:
-    exit(9)
+    web_api = auth_without_settings()
 except ClientError as e:
-    exit(9)
+    web_api = auth_without_settings()
 except Exception as e:
-    exit(99)
+    print(e)
+    web_api = auth_without_settings()
