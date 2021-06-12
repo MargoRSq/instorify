@@ -54,7 +54,7 @@ def fetch_stories(username: str) -> list[dict]:
 
     return list_of_stories
 
-def fetch_stories_count(username: str) -> int:
+def count_stories(username: str) -> int:
     return len(get_stories_raw(username))
 
 def fetch_one_story_by_index(username: str, index: int) -> dict or None:
