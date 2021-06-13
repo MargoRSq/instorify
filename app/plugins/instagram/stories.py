@@ -22,7 +22,6 @@ def stories_raw_to_object(story_dict: dict) -> dict:
     elif object['type'] == MediaTypes.VIDEO:
         object['content_url'] = story_dict['video_versions'][0]['url']
 
-
     object['height'] = story_dict['original_height']
     object['width'] = story_dict['original_width']
 
@@ -32,7 +31,7 @@ def stories_raw_to_object(story_dict: dict) -> dict:
 
     return object
 
-def get_stories_raw(username: str) -> list[dict]:
+def fetch_stories_raw(username: str) -> list[dict]:
     user_pk = username_to_pk(username)
 
     stories = private_api.user_story_feed(user_pk)
@@ -43,8 +42,7 @@ def get_stories_raw(username: str) -> list[dict]:
     return stories['reel']['items']
 
 def fetch_stories(username: str) -> list[dict]:
-
-    stories = get_stories_raw(username)
+    stories = fetch_stories_raw(username)
 
     list_of_stories = []
     for i in range(len(stories)):
@@ -54,17 +52,16 @@ def fetch_stories(username: str) -> list[dict]:
 
     return list_of_stories
 
-def count_stories(username: str) -> int:
-    return len(get_stories_raw(username))
+def fetch_count_stories(username: str) -> int:
+    return len(fetch_stories_raw(username))
 
 def fetch_one_story_by_index(username: str, index: int) -> dict or None:
-    stories = get_stories_raw(username)
+    stories = fetch_stories_raw(username)
     
     if len(stories) < index:
         return None
-    else:
-        story_by_index = stories[index - 1]
-
+    
+    story_by_index = stories[index - 1]
     story_object = stories_raw_to_object(story_by_index)
 
     return story_object
