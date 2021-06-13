@@ -2,8 +2,8 @@ import os
 import codecs
 import json
 
-PASS = os.environ['PASS_2']
-LOGIN = os.environ['LOGIN_2']
+PASS = os.environ['PASS']
+LOGIN = os.environ['LOGIN']
 
 COOCKIE_PATH_PRIVATE = '../cache/instagram_private_cookie.json'
 COOCKIE_PATH_WEB = '../cache/instagram_web_cookie.json'
