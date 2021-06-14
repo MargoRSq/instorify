@@ -11,7 +11,6 @@ from plugins.instagram.clients.utils import (COOCKIE_PATH_PRIVATE, LOGIN, PASS,
                                              from_json, handle_login)
 
 MAX_TRY = 5
-count = 0
 
 
 def auth_without_settings():
@@ -26,7 +25,7 @@ def auth_with_settings(settings):
                 password=PASS, 
                 settings=settings) 
 
-def auth(count):
+def auth(count=0):
     try:
         if not os.path.isfile(COOCKIE_PATH_PRIVATE):
             # If cookies exists
@@ -51,4 +50,4 @@ def auth(count):
     return private_api
 
       
-private_api = auth(count)
+private_api = auth()

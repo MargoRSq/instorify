@@ -14,7 +14,6 @@ from plugins.instagram.clients.utils import (COOCKIE_PATH_WEB, LOGIN, PASS,
                                              from_json, handle_login)
 
 MAX_TRY = 5
-count = 0
 
 
 class WebApiClient(instagram_web_api.Client):
@@ -66,7 +65,7 @@ def auth_with_settings(settings):
                 password=PASS, 
                 settings=settings)          
 
-def auth(count):
+def auth(count=0):
     try:
         if not os.path.isfile(COOCKIE_PATH_WEB):
             # If cookies exists
@@ -91,4 +90,4 @@ def auth(count):
     return web_api
 
 
-web_api = auth(count)
+web_api = auth()
