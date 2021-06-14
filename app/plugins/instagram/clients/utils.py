@@ -24,9 +24,3 @@ def handle_login(api, cookie_path):
     cache_settings = api.settings
     with open(cookie_path, 'w') as outfile:
         json.dump(cache_settings, outfile, default=to_json)
-
-def handle_login_refresh(api, cookie_path):
-    os.remove(cookie_path)
-    cache_settings = api.settings
-    with open(cookie_path, 'w') as outfile:
-        json.dump(cache_settings, outfile, default=to_json)

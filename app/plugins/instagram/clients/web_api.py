@@ -4,14 +4,17 @@ import json
 import os
 import random
 import string
+from time import sleep
 
 import instagram_web_api
-from instagram_web_api import (ClientCookieExpiredError, ClientError,
-                               ClientLoginError,
-                               ClientThrottledError)
 
+from instagram_web_api import (ClientCookieExpiredError, ClientError,
+                               ClientLoginError, ClientThrottledError)
 from plugins.instagram.clients.utils import (COOCKIE_PATH_WEB, LOGIN, PASS,
                                              from_json, handle_login)
+
+MAX_TRY = 5
+count = 0
 
 
 class WebApiClient(instagram_web_api.Client):
@@ -63,7 +66,7 @@ def auth_with_settings(settings):
                 password=PASS, 
                 settings=settings)          
 
-def auth():
+def auth(count):
     try:
         if not os.path.isfile(COOCKIE_PATH_WEB):
             # If cookies exists
@@ -75,27 +78,17 @@ def auth():
                 # reuse auth settings
                 web_api = auth_with_settings(cached_settings_private)
             
-    except (ClientCookieExpiredError) as e:
-        print(e)
-        # Login expired
-        web_api = auth_without_settings()
-    except ClientThrottledError as e:
-        print(e)
-        # Please wait a few minutes before you try again
-        web_api = auth_without_settings()
-    except ClientLoginError as e:
-        print(e)
-        # Raised when login fails
-        web_api = auth_without_settings()
-    except ClientError as e:
-        print(e)
-        # Other login errors
-        web_api = auth_without_settings()
-    except Exception as e:
-        print(e)
-        exit()
+    except (ClientCookieExpiredError, ClientThrottledError, 
+            ClientLoginError, ClientError, Exception) as e:
+        print(f'{count + 1} try', e)
+        
+        if count == MAX_TRY:
+            exit()
+        
+        sleep(1)
+        auth(count + 1)
     
     return web_api
 
 
-web_api = auth()
+web_api = auth(count)
