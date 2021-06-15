@@ -17,5 +17,8 @@ def fetch_user_info(username: str):
     ojbect['profile_info'] = user['biography']
     ojbect['is_private'] = user['is_private']
     ojbect['is_verified'] = user['is_verified']
+    ojbect['follower_count'] = user['follower_count']
+    ojbect['following_count'] = user['following_count']
+    ojbect['media_count'] = user['media_count']
 
     return ojbect
