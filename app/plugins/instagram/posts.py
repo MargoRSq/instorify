@@ -22,13 +22,11 @@ def carousel_item(item: dict) -> list:
 def video_item(item: dict) -> dict:
     object = {}
     object['content_url'] = item['video_versions'][0]['url']
-    object['type'] = MediaTypes.VIDEO
     object['duration'] = item['video_duration']
 
     return object
 
 def photo_item(item: dict) -> dict:
-
     height = None
     width = None
     object = {}
@@ -43,13 +41,11 @@ def photo_item(item: dict) -> dict:
         for image in item['image_versions2']['candidates']:
             if height == image['height'] and width == image['width']:
                 object['content_url'] = image['url']
-                object['type'] = MediaTypes.PHOTO
     else:
         max_height = 0
         for image in item['image_versions2']['candidates']:
             if height > max_height:
                 object['content_url'] = image['url']
-                object['type'] = MediaTypes.PHOTO
 
     return object
 
@@ -63,16 +59,18 @@ def post_items_raw_to_object(items: list) -> list[dict]:
         if 'created_at' in item:
             object['created_at'] = item['caption']['created_at']
         object['like_count'] = item['like_count']
-
         object['id'] = int(item['id'])
 
-        if 'video_duration' in item:
+        if item['media_type'] == MediaTypes.VIDEO:
+            object['type'] = MediaTypes.VIDEO
             object.update(video_item(item))
 
-        elif 'carousel_media' in item:
+        elif item['media_type'] == MediaTypes.CAROUSEL:
             object['type'] = MediaTypes.CAROUSEL
             object['items'] = carousel_item(item)
-        else:
+
+        elif item['media_type'] == MediaTypes.PHOTO:
+            object['type'] = MediaTypes.PHOTO
             object.update(photo_item(item))
 
         objects.append(object)
