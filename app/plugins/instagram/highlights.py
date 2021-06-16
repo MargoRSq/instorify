@@ -32,7 +32,7 @@ def highlight_items_raw_to_object(items: list) -> list[dict]:
 
     return objects
 
-def highlight_raw_to_object(raw: str) -> dict:
+def highlight_raw_to_object(raw: dict) -> dict:
     return {'id': int(raw['id'].split(':')[1]),
                 'title': raw['title'],
                 'created_at': raw['created_at'],
@@ -40,7 +40,7 @@ def highlight_raw_to_object(raw: str) -> dict:
                 'preview_url': raw['cover_media']['cropped_image_version']['url']}
 
 # highlights
-def fetch_highlights(username: str) -> list:
+def fetch_highlights(username: str) -> list[dict]:
     user_pk = username_to_pk(username)
     all_highlights = private_api.highlights_user_feed(user_pk)['tray']
 
@@ -70,7 +70,7 @@ def fetch_one_highlight(username: str, index: int) -> dict or None:
     return content_info
 
 # highlights by id
-def fetch_items_highlight_by_id(id: int) -> list:
+def fetch_items_highlight_by_id(id: int) -> list[dict]:
     highlight_reel_media = web_api.highlight_reel_media([id])
 
     for highlight in highlight_reel_media['data']['reels_media']:
@@ -78,9 +78,9 @@ def fetch_items_highlight_by_id(id: int) -> list:
 
     return items[::-1]
 
+def fetch_item_highlight_by_id(id: int, index: int) -> dict:
+    return fetch_items_highlight_by_id(id)[index - 1]
+
 def fetch_count_highlight_by_id(id: int) -> int:
     highlight_reel_media = web_api.highlight_reel_media([id])
     return len(highlight_reel_media['data']['reels_media'][0]['items'])
-
-def fetch_item_highlight_by_id(id: int, index: int) -> list:
-    return fetch_items_highlight_by_id(id)[index - 1]

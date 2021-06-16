@@ -1,5 +1,3 @@
-from enum import Enum
-
 from plugins.instagram.clients.private_api import private_api
 
 
