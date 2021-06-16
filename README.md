@@ -5,7 +5,7 @@
 1. [Requirements](#requirements)
 1. [Install](#install)
 1. [Start developing](#start-developing)
-1. [Scripts commands](#scripts-commands)
+1. [Scripts flags](#scripts-flags)
 1. [Structure](#structure)
 1. [Developing steps](#developing-steps)
     * [Branches](#branches)
@@ -23,6 +23,8 @@
 ### Site urls:
 
 * **TODO**
+
+### Requirements:
 
 Python 3.9 required
 
