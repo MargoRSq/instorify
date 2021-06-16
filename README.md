@@ -67,16 +67,17 @@ This starts the development server on http://localhost:8000.
 ## Structure
 
 ```
-│─── app
-│   ├─── api
-│   │   └─── routes
-│   │       ├─── dependencies
-│   │       └─── inst
-│   └─── plugins
-│       ├─── instagram
-│       │   └─── clients
-│       └─── vk
-└─── cache
+├───app
+│   │   main.py     # file with main API app that uvicorn running
+│   ├───api         # dir with api routes and parse-plugins
+│   │   └───routes
+│   │       │   api.py          # main API router, that includes all routes with prefix
+│   │       ├───dependencies    # dependencies for api endpoints
+│   │       └───inst            # instagram routes
+│   └───plugins
+│       └───instagram           # instagram parse-plugins
+│           └───clients         # instagram web_api and private_api auth
+└───cache       # cookie files with applications auth
 ```
 
 ## Developing steps
