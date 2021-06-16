@@ -78,7 +78,7 @@ def fetch_items_highlight_by_id(id: int) -> list[dict]:
 
     return items[::-1]
 
-def fetch_item_highlight_by_id(id: int, index: int) -> dict:
+def fetch_items_count_highlight_by_id(id: int, index: int) -> dict:
     return fetch_items_highlight_by_id(id)[index - 1]
 
 def fetch_count_highlight_by_id(id: int) -> int:

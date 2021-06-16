@@ -2,7 +2,7 @@ from fastapi import APIRouter, Body, Depends, HTTPException
 
 from plugins.instagram.highlights import (fetch_count_highlights,
                                           fetch_items_highlight_by_id,
-                                          fetch_item_highlight_by_id,
+                                          fetch_items_count_highlight_by_id,
                                           fetch_highlights,
                                           fetch_one_highlight,
                                           fetch_count_highlight_by_id)
@@ -33,4 +33,4 @@ def get_count_highlight_by_id(highlight_id: int):
 
 @router.get('/{username}/highlights/items/{highlight_id}/{index_media}')
 def get_highlight_item_by_id(highlight_id: int, index_media: int):
-    return {'data': fetch_item_highlight_by_id(highlight_id, index_media)}
+    return {'data': fetch_items_count_highlight_by_id(highlight_id, index_media)}
