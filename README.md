@@ -24,13 +24,24 @@
 
 * **TODO**
 
-## Requirements
+Python 3.9 required
 
 * **TODO**
 
 ## Install
 
-* **TODO**
+```bash
+pipenv install --dev
+```
+or if you don't want to use pipenv and want to store dependencies in project dir
+```bash
+pip install virtualenv --upgrade
+python -m venv env/
+cd env/Script
+activate.bat
+cd ../../
+pip install -r requirements.txt
+```
 
 ## Start developing
 
