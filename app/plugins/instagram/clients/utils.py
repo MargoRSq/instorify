@@ -23,4 +23,4 @@ def from_json(json_object):
 def handle_login(api, cookie_path):
     cache_settings = api.settings
     with open(cookie_path, 'w') as outfile:
-        json.dump(cache_settings, outfile, default=to_json)
+        json.dump(cache_settings, outfile, default=to_json, indent='\t')

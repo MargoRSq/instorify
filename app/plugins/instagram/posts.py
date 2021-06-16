@@ -5,7 +5,7 @@ from plugins.instagram.clients.web_api import web_api
 from plugins.instagram.utils import username_to_pk
 
 
-def fetch_user_info(username: str):
+def fetch_user_info(username: str) -> dict:
     user = private_api.username_info(username)['user']
 
     object = {}

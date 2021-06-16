@@ -13,7 +13,7 @@ router = APIRouter()
 @router.get('/{username}/highlights')
 def get_all_highlights(username: str):
     return {'data': fetch_highlights(username)}
-    
+
 @router.get('/{username}/highlights/count')
 def get_count_highlights(username: str):
     return {'data': fetch_count_highlights(username)}
