@@ -34,15 +34,37 @@
 
 ## Start developing
 
-* **TODO**
+Start uvicorn server with API using these commands:
+```bash
+pipenv shell
+cd app/
+uvicorn main:app
+```
+This starts the development server on http://localhost:8000.
 
-## Scripts commands
 
-* **TODO**
+## Scripts flags
+
+|`uvicorn main:app <flag>`    |Description|
+|-------------------|-----------|
+|`--reload`         |Run app with auto-reload|
+|`--env-file PATH`  |Run app with env-variables from PATH|
+|`--log-config PATH`|Run app with logging in log from PATH|
 
 ## Structure
 
-* **TODO**
+```
+│─── app
+│   ├─── api
+│   │   └─── routes
+│   │       ├─── dependencies
+│   │       └─── inst
+│   └─── plugins
+│       ├─── instagram
+│       │   └─── clients
+│       └─── vk
+└─── cache
+```
 
 ## Developing steps
 
