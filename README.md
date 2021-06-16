@@ -5,7 +5,7 @@
 1. [Requirements](#requirements)
 1. [Install](#install)
 1. [Start developing](#start-developing)
-1. [Scripts commands](#scripts-commands)
+1. [Scripts flags](#scripts-flags)
 1. [Structure](#structure)
 1. [Developing steps](#developing-steps)
     * [Branches](#branches)
@@ -24,25 +24,61 @@
 
 * **TODO**
 
-## Requirements
+### Requirements:
+
+Python 3.9 required
 
 * **TODO**
 
 ## Install
 
-* **TODO**
+```bash
+pipenv install --dev
+```
+or if you don't want to use pipenv and want to store dependencies in project dir
+```bash
+pip install virtualenv --upgrade
+python -m venv env/
+cd env/Script
+activate.bat
+cd ../../
+pip install -r requirements.txt
+```
 
 ## Start developing
 
-* **TODO**
+Start uvicorn server with API using these commands:
+```bash
+pipenv shell
+cd app/
+uvicorn main:app
+```
+This starts the development server on http://localhost:8000.
 
-## Scripts commands
 
-* **TODO**
+## Scripts flags
+
+|`uvicorn main:app <flag>`    |Description|
+|-------------------|-----------|
+|`--reload`         |Run app with auto-reload|
+|`--env-file PATH`  |Run app with env-variables from PATH|
+|`--log-config PATH`|Run app with logging in log from PATH|
 
 ## Structure
 
-* **TODO**
+```
+├───app
+│   │   main.py     # file with main API app that uvicorn running
+│   ├───api         # dir with api routes and parse-plugins
+│   │   └───routes
+│   │       │   api.py          # main API router, that includes all routes with prefix
+│   │       ├───dependencies    # dependencies for api endpoints
+│   │       └───inst            # instagram routes
+│   └───plugins
+│       └───instagram           # instagram parse-plugins
+│           └───clients         # instagram web_api and private_api auth
+└───cache       # cookie files with applications auth
+```
 
 ## Developing steps
 
