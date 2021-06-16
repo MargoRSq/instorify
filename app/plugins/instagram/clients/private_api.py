@@ -15,15 +15,15 @@ MAX_TRY = 5
 
 def auth_without_settings():
     return Client(
-                username=LOGIN, 
-                password=PASS, 
+                username=LOGIN,
+                password=PASS,
                 on_login=lambda x: handle_login(x, COOCKIE_PATH_PRIVATE))
 
 def auth_with_settings(settings):
     return Client(
-                username=LOGIN, 
-                password=PASS, 
-                settings=settings) 
+                username=LOGIN,
+                password=PASS,
+                settings=settings)
 
 def auth(count=0):
     try:
@@ -36,18 +36,18 @@ def auth(count=0):
                 cached_settings_private = json.load(file_data, object_hook=from_json)
                 # reuse auth settings
                 private_api = auth_with_settings(cached_settings_private)
-            
-    except (ClientCookieExpiredError, ClientThrottledError, 
+
+    except (ClientCookieExpiredError, ClientThrottledError,
             ClientLoginError, ClientError, Exception) as e:
         print(f'{count + 1} try', e)
-        
+
         if count == MAX_TRY:
             exit()
-        
+
         sleep(1)
         auth(count + 1)
-    
+
     return private_api
 
-      
+
 private_api = auth()

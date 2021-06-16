@@ -37,33 +37,33 @@ class WebApiClient(instagram_web_api.Client):
         enc_password = f"#PWD_INSTAGRAM_BROWSER:0:{time}:{self.password}"
 
         params = {
-                'username': self.username, 
-                'enc_password': enc_password, 
-                'queryParams': '{}', 
+                'username': self.username,
+                'enc_password': enc_password,
+                'queryParams': '{}',
                 'optIntoOneTap': False}
         self._init_rollout_hash()
-        
+
         login_res = self._make_request('https://www.instagram.com/accounts/login/ajax/', params=params)
         if not login_res.get('status', '') == 'ok' or not login_res.get ('authenticated'):
             raise ClientLoginError('Unable to login')
 
         if self.on_login:
             on_login_callback = self.on_login(self)
-        
+
         return login_res
 
 
 def auth_without_settings():
     return WebApiClient(
-                username=LOGIN, 
-                password=PASS, 
+                username=LOGIN,
+                password=PASS,
                 on_login=lambda x: handle_login(x, COOCKIE_PATH_WEB))
 
 def auth_with_settings(settings):
     return WebApiClient(
-                username=LOGIN, 
-                password=PASS, 
-                settings=settings)          
+                username=LOGIN,
+                password=PASS,
+                settings=settings)
 
 def auth(count=0):
     try:
@@ -76,17 +76,17 @@ def auth(count=0):
                 cached_settings_private = json.load(file_data, object_hook=from_json)
                 # reuse auth settings
                 web_api = auth_with_settings(cached_settings_private)
-            
-    except (ClientCookieExpiredError, ClientThrottledError, 
+
+    except (ClientCookieExpiredError, ClientThrottledError,
             ClientLoginError, ClientError, Exception) as e:
         print(f'{count + 1} try', e)
-        
+
         if count == MAX_TRY:
             exit()
-        
+
         sleep(1)
         auth(count + 1)
-    
+
     return web_api
 
 

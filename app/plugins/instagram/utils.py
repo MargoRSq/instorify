@@ -9,12 +9,12 @@ def username_to_pk(username: str) -> int:
     return search_results['user']['pk']
 
 # instagram id(pk) to instagram username
-def pk_to_username(pk: int) -> str: 
+def pk_to_username(pk: int) -> str:
     search_results = private_api.user_info(pk)
     return search_results['user']['username']
 
 # fetching "following" accounts
-def fetch_following_pk(pk: int) -> list[int]: 
+def fetch_following_pk(pk: int) -> list[int]:
 
     uuid = private_api.generate_uuid()
     results = private_api.user_following(pk, uuid)
