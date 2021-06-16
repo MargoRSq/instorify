@@ -1,8 +1,4 @@
-from instagram_private_api import MediaTypes
-import json
 from plugins.instagram.clients.private_api import private_api
-from plugins.instagram.clients.web_api import web_api
-from plugins.instagram.utils import username_to_pk
 
 
 def fetch_user_info(username: str) -> dict:
