@@ -15,10 +15,10 @@ def stories_raw_to_object(story_dict: dict) -> dict:
         object['original_created_at'] = story_dict['imported_taken_at']
 
     object['type'] = story_dict['media_type']
-    
-    if object['type'] == MediaTypes.PHOTO: 
+
+    if object['type'] == MediaTypes.PHOTO:
         object['content_url'] = story_dict['image_versions2']['candidates'][0]['url']
-    
+
     elif object['type'] == MediaTypes.VIDEO:
         object['content_url'] = story_dict['video_versions'][0]['url']
 
@@ -57,10 +57,10 @@ def fetch_count_stories(username: str) -> int:
 
 def fetch_one_story_by_index(username: str, index: int) -> dict or None:
     stories = fetch_stories_raw(username)
-    
+
     if len(stories) < index:
         return None
-    
+
     story_by_index = stories[index - 1]
     story_object = stories_raw_to_object(story_by_index)
 
