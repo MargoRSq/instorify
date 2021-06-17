@@ -1,9 +1,11 @@
 from fastapi import APIRouter, Body, Depends, HTTPException
 from plugins.instagram.profile import (fetch_user_info)
 
+from models.schemas.instagram import User
+
 router = APIRouter()
 
 
-@router.get('/{username}/')
+@router.get('/{username}/', response_model=User, summary='Get user profile info')
 def get_user_info(username: str):
-    return {'data': fetch_user_info(username)}
+    return fetch_user_info(username)

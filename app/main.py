@@ -9,7 +9,7 @@ from api.routes.api import router as api_router
 origins_regex = r'http(s?)://localhost:3000'
 
 def get_application() -> FastAPI:
-    application = FastAPI(title='api')
+    application = FastAPI(title='Storify_api', version='9999.9999.999', docs_url="/__docs",)
 
     application.add_middleware(
         CORSMiddleware,
