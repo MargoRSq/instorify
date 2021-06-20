@@ -1,1 +1,1 @@
-web: sh -c 'cd ./directory/ && uvicorn main:app'
+web: sh -c 'cd app/ && uvicorn main:app'
