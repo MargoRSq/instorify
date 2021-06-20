@@ -9,6 +9,8 @@ COOCKIE_PATH_PRIVATE = '../cache/instagram_private_cookie.json'
 COOCKIE_PATH_WEB = '../cache/instagram_web_cookie.json'
 
 
+
+
 def to_json(python_object):
     if isinstance(python_object, bytes):
         return {'__class__': 'bytes',

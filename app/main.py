@@ -3,6 +3,10 @@ from fastapi.middleware.cors import CORSMiddleware
 
 from api.routes.api import router as api_router
 
+origins_regex = [
+    'http(s?)://localhost:3000'
+]
+
 origins = ['http://localhost:3000']
 
 def get_application() -> FastAPI:
