@@ -6,9 +6,9 @@ name = "pypi"
 [packages]
 instagram-private-api = {editable = true, ref = "1.6.0", git = "https://git@github.com/ping/instagram_private_api.git"}
 fastapi = "==0.65.2"
+uvicorn = {extras = ["standard"], version = "*"}
 
 [dev-packages]
-uvicorn = {extras = ["standard"], version = "*"}
 pep8 = "*"
 flake8 = "*"
 
