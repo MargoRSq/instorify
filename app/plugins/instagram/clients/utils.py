@@ -5,8 +5,9 @@ import json
 PASS = os.environ['PASS']
 LOGIN = os.environ['LOGIN']
 
-COOCKIE_PATH_PRIVATE = '../cache/instagram_private_cookie.json'
-COOCKIE_PATH_WEB = '../cache/instagram_web_cookie.json'
+COOKIE_PATH = '../cache'
+COOCKIE_PATH_PRIVATE = COOKIE_PATH + '/instagram_private_cookie.json'
+COOCKIE_PATH_WEB = COOKIE_PATH + '/instagram_web_cookie.json'
 
 
 
@@ -23,6 +24,8 @@ def from_json(json_object):
     return json_object
 
 def handle_login(api, cookie_path):
+    if not os.path.isdir(COOKIE_PATH):
+        os.mkdir(COOKIE_PATH)
     cache_settings = api.settings
     with open(cookie_path, 'w') as outfile:
         json.dump(cache_settings, outfile, default=to_json, indent='\t')
