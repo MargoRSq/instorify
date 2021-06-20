@@ -1,0 +1,1 @@
+web: sh -c 'cd ./directory/ && uvicorn main:app'
