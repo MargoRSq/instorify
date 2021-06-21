@@ -1,6 +1,9 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
+from instagram_private_api.errors import ClientError
+
+from api.errors.instagram import username_error
 from api.routes.api import router as api_router
 
 origins_regex = r'http(s?)://localhost:3000'
@@ -16,6 +19,8 @@ def get_application() -> FastAPI:
     )
 
     application.include_router(api_router)
+
+    application.add_exception_handler(ClientError, username_error)
 
     return application
 
