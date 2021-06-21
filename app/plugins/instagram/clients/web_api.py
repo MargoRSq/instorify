@@ -74,7 +74,7 @@ def auth(count=0):
             # Create cookies
             with open(COOCKIE_PATH_WEB) as file_data:
                 cached_settings_private = json.load(file_data, object_hook=from_json)
-                # reuse auth settings
+                # Reuse auth settings
                 web_api = auth_with_settings(cached_settings_private)
 
     except (ClientCookieExpiredError, ClientThrottledError,

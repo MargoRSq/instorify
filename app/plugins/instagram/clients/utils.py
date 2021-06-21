@@ -2,14 +2,13 @@ import os
 import codecs
 import json
 
+
 PASS = os.environ['PASS']
 LOGIN = os.environ['LOGIN']
 
 COOKIE_PATH = '../cache'
 COOCKIE_PATH_PRIVATE = COOKIE_PATH + '/instagram_private_cookie.json'
 COOCKIE_PATH_WEB = COOKIE_PATH + '/instagram_web_cookie.json'
-
-
 
 
 def to_json(python_object):
