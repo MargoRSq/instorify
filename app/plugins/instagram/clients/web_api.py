@@ -53,19 +53,19 @@ class WebApiClient(instagram_web_api.Client):
         return login_res
 
 
-def auth_without_settings():
+def auth_without_settings() -> WebApiClient:
     return WebApiClient(
                 username=LOGIN,
                 password=PASS,
                 on_login=lambda x: handle_login(x, COOCKIE_PATH_WEB))
 
-def auth_with_settings(settings):
+def auth_with_settings(settings) -> WebApiClient:
     return WebApiClient(
                 username=LOGIN,
                 password=PASS,
                 settings=settings)
 
-def auth(count=0):
+def auth(count=0) -> WebApiClient:
     try:
         if not os.path.isfile(COOCKIE_PATH_WEB):
             # If cookies exists

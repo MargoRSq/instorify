@@ -1,13 +1,14 @@
-from typing import List, Dict, Optional
-from pydantic import BaseModel
-from enum import IntEnum, Enum
+from enum import Enum, IntEnum
+from typing import Optional, TypedDict
+
 from instagram_private_api import MediaTypes
+from pydantic import BaseModel
 
 
-class MediaTypes(IntEnum):
-    PHOTO = 1       #: Photo type
-    VIDEO = 2       #: Video type
-    CAROUSEL = 8
+class InstMediaTypes(IntEnum):
+    PHOTO = MediaTypes.PHOTO
+    VIDEO = MediaTypes.VIDEO
+    CAROUSEL = MediaTypes.CAROUSEL
 
 
 class Audience(Enum):
@@ -16,7 +17,7 @@ class Audience(Enum):
 
 class StoryItem(BaseModel):
     id: int
-    type: MediaTypes
+    type: InstMediaTypes
     audience: Optional[Audience]
     content_url: str
     created_at: int
@@ -45,3 +46,50 @@ class User(BaseModel):
     follower_count: int
     following_count: int
     media_count: int
+
+
+
+# Plugin functions schemas
+
+HighlightItemsObject = TypedDict('HighlightObjectPlugin', {
+        'id': int,
+        'type': InstMediaTypes,
+        'height': str,
+        'width': int,
+        'created_at': int,
+        'duration': Optional[float],
+        'content_url': str
+})
+
+HighlightObject = TypedDict('HighlightObject', {
+        'id': int,
+        'title': str,
+        'created_at': int,
+        'media_count': int,
+        'preview_url': str
+})
+
+UserInfoObject = TypedDict('UserInfoObject', {
+    'id': int,
+    'username': str,
+    'full_name': str,
+    'profile_img': str,
+    'profile_info': str,
+    'is_private': bool,
+    'is_verified': bool,
+    'follower_count': int,
+    'following_count': int,
+    'media_count': int,
+})
+
+StoryObject = TypedDict('StoryObject', {
+        'id': int,
+        'audience': Optional[Audience],
+        'original_created_at': Optional[int],
+        'type': InstMediaTypes,
+        'height': str,
+        'width': int,
+        'created_at': int,
+        'duration': Optional[float],
+        'content_url': str
+})

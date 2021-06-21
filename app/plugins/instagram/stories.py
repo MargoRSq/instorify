@@ -1,10 +1,13 @@
+from typing import Union
+
+from app.models.schemas.instagram import StoryObject
+from instagram_private_api import MediaTypes
+
 from plugins.instagram.clients.private_api import private_api
 from plugins.instagram.utils import username_to_pk
 
-from instagram_private_api import MediaTypes
 
-
-def stories_raw_to_object(story_dict: dict) -> dict:
+def stories_raw_to_object(story_dict: dict) -> StoryObject:
     object = {}
 
     # optional params
@@ -41,7 +44,7 @@ def fetch_stories_raw(username: str) -> list[dict]:
 
     return stories['reel']['items']
 
-def fetch_stories(username: str) -> list[dict]:
+def fetch_stories(username: str) -> list[StoryObject]:
     stories = fetch_stories_raw(username)
 
     list_of_stories = []
@@ -55,7 +58,7 @@ def fetch_stories(username: str) -> list[dict]:
 def fetch_count_stories(username: str) -> int:
     return len(fetch_stories_raw(username))
 
-def fetch_one_story_by_index(username: str, index: int) -> dict or None:
+def fetch_one_story_by_index(username: str, index: int) -> Union[dict, None]:
     stories = fetch_stories_raw(username)
 
     if len(stories) < index:
