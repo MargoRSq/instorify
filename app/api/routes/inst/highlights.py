@@ -7,7 +7,7 @@ from plugins.instagram.highlights import (fetch_count_highlights,
                                           fetch_items_highlight_by_id,
                                           fetch_highlights,
                                           fetch_one_highlight,
-                                          fetch_count_highlight_by_id, fetch_items_highlight_by_id_by_index)
+                                          fetch_count_highlight_by_id, fetch_highlight_item_by_id)
 from models.schemas.instagram import HighlightItemPreview, StoryItem, NotFoundMessage
 
 
@@ -61,7 +61,7 @@ def get_count_highlight_by_id(highlight_id: int):
             summary='Get story by index from highlight',
             responses={status.HTTP_404_NOT_FOUND: {'model': NotFoundMessage}})
 def get_highlight_item_by_id(highlight_id: int, index_media: int):
-    highlight = fetch_items_highlight_by_id_by_index(highlight_id, index_media)
+    highlight = fetch_highlight_item_by_id(highlight_id, index_media)
 
     if (highlight == None):
         return JSONResponse(status_code=status.HTTP_404_NOT_FOUND,

@@ -87,7 +87,7 @@ def fetch_items_highlight_by_id(id: int) -> list[HighlightItemsObject]:
     return items[::-1]
 
 
-def fetch_items_highlight_by_id_by_index(id: int, index: int) -> HighlightItemsObject:
+def fetch_highlight_item_by_id(id: int, index: int) -> HighlightItemsObject:
     stories = fetch_items_highlight_by_id(id)
 
     if len(stories) < index:
