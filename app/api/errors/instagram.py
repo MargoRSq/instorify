@@ -3,5 +3,9 @@ from starlette.requests import Request
 from starlette.responses import JSONResponse
 
 
+def not_found_error(entity: str) -> JSONResponse:
+    return JSONResponse({'detail': entity + ' Not Found'}, status_code=404)
+
+
 def username_error(_: Request, exc: HTTPException) -> JSONResponse:
-    return JSONResponse({'detail': 'User not found'}, status_code=404)
+    return not_found_error('User')

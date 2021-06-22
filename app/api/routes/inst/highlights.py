@@ -1,15 +1,16 @@
 from typing import List
+
 from fastapi import APIRouter, status
-from fastapi.responses import JSONResponse
 
-from plugins.instagram.highlights import (fetch_count_highlights,
-                                          fetch_items_highlight_by_id,
+from api.errors.instagram import not_found_error
+from models.schemas.instagram import (HighlightItemPreview, NotFoundMessage,
+                                      StoryItem)
+from plugins.instagram.highlights import (fetch_count_highlight_by_id,
+                                          fetch_count_highlights,
+                                          fetch_highlight_item_by_id,
                                           fetch_highlights,
-                                          fetch_one_highlight,
-                                          fetch_count_highlight_by_id,
-                                          fetch_highlight_item_by_id)
-from models.schemas.instagram import HighlightItemPreview, StoryItem, NotFoundMessage
-
+                                          fetch_items_highlight_by_id,
+                                          fetch_one_highlight)
 
 router = APIRouter()
 
@@ -36,8 +37,7 @@ def get_highlight_by_index(username: str, highlight_index: int):
     highlight = fetch_one_highlight(username, highlight_index)
 
     if highlight is None:
-        return JSONResponse(status_code=status.HTTP_404_NOT_FOUND,
-                            content={'detail': 'Highlight not found'})
+        return not_found_error('Highlight')
 
     return highlight
 
@@ -64,7 +64,6 @@ def get_highlight_item_by_id(highlight_id: int, index_media: int):
     highlight = fetch_highlight_item_by_id(highlight_id, index_media)
 
     if highlight is None:
-        return JSONResponse(status_code=status.HTTP_404_NOT_FOUND,
-                            content={'detail': 'Story from highlight not found'})
+        return not_found_error('Story from highlight')
 
     return highlight

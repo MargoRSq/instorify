@@ -1,9 +1,9 @@
 from typing import List
 
 from fastapi import APIRouter, status
-from fastapi.responses import JSONResponse
 
 from models.schemas.instagram import NotFoundMessage, StoryItem
+from api.errors.instagram import not_found_error
 from plugins.instagram.stories import (fetch_count_stories,
                                        fetch_one_story_by_index, fetch_stories)
 
@@ -28,7 +28,6 @@ def get_one_story(username: str, index_story: int):
     story = fetch_one_story_by_index(username, index_story)
 
     if story is None:
-        return JSONResponse(status_code=status.HTTP_404_NOT_FOUND,
-                            content={'detail': 'Story not found'})
+        return not_found_error('Story')
 
     return story
