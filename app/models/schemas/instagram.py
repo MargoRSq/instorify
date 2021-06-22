@@ -3,7 +3,6 @@ from typing import Optional, TypedDict
 
 from instagram_private_api import MediaTypes
 from pydantic import BaseModel
-from starlette import status
 
 
 class NotFoundMessage(BaseModel):
@@ -62,7 +61,7 @@ HighlightItemsObject = TypedDict('HighlightObjectPlugin', {
     'created_at': int,
     'duration': Optional[float],
     'content_url': str
-})
+    })
 
 HighlightObject = TypedDict('HighlightObject', {
     'id': int,
@@ -70,7 +69,7 @@ HighlightObject = TypedDict('HighlightObject', {
     'created_at': int,
     'media_count': int,
     'preview_url': str
-})
+    })
 
 UserInfoObject = TypedDict('UserInfoObject', {
     'id': int,
@@ -82,8 +81,8 @@ UserInfoObject = TypedDict('UserInfoObject', {
     'is_verified': bool,
     'follower_count': int,
     'following_count': int,
-    'media_count': int,
-})
+    'media_count': int
+    })
 
 StoryObject = TypedDict('StoryObject', {
     'id': int,
@@ -95,4 +94,4 @@ StoryObject = TypedDict('StoryObject', {
     'created_at': int,
     'duration': Optional[float],
     'content_url': str
-})
+    })

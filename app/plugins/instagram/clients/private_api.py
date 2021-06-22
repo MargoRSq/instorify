@@ -4,7 +4,6 @@ from time import sleep
 
 from instagram_private_api import (Client, ClientCookieExpiredError,
                                    ClientError, ClientLoginError,
-                                   ClientLoginRequiredError,
                                    ClientThrottledError)
 
 from plugins.instagram.clients.utils import (COOCKIE_PATH_PRIVATE, LOGIN, PASS,

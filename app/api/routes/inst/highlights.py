@@ -4,10 +4,10 @@ from fastapi.responses import JSONResponse
 
 from plugins.instagram.highlights import (fetch_count_highlights,
                                           fetch_items_highlight_by_id,
-                                          fetch_items_highlight_by_id,
                                           fetch_highlights,
                                           fetch_one_highlight,
-                                          fetch_count_highlight_by_id, fetch_highlight_item_by_id)
+                                          fetch_count_highlight_by_id,
+                                          fetch_highlight_item_by_id)
 from models.schemas.instagram import HighlightItemPreview, StoryItem, NotFoundMessage
 
 
@@ -35,7 +35,7 @@ def get_count_highlights(username: str):
 def get_highlight_by_index(username: str, highlight_index: int):
     highlight = fetch_one_highlight(username, highlight_index)
 
-    if (highlight == None):
+    if highlight is None:
         return JSONResponse(status_code=status.HTTP_404_NOT_FOUND,
                             content={'detail': 'Highlight not found'})
 
@@ -63,7 +63,7 @@ def get_count_highlight_by_id(highlight_id: int):
 def get_highlight_item_by_id(highlight_id: int, index_media: int):
     highlight = fetch_highlight_item_by_id(highlight_id, index_media)
 
-    if (highlight == None):
+    if highlight is None:
         return JSONResponse(status_code=status.HTTP_404_NOT_FOUND,
                             content={'detail': 'Story from highlight not found'})
 

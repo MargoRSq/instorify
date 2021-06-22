@@ -49,7 +49,7 @@ class WebApiClient(instagram_web_api.Client):
             raise ClientLoginError('Unable to login')
 
         if self.on_login:
-            on_login_callback = self.on_login(self)
+            self.on_login(self)
 
         return login_res
 

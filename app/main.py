@@ -18,7 +18,7 @@ def get_application() -> FastAPI:
         allow_origin_regex=origins_regex,
         allow_credentials=True,
         allow_methods=["*"],
-    )
+        )
 
     application.include_router(api_router)
 

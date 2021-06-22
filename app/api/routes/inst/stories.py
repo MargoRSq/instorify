@@ -27,7 +27,7 @@ def get_count_stories(username: str):
 def get_one_story(username: str, index_story: int):
     story = fetch_one_story_by_index(username, index_story)
 
-    if (story == None):
+    if story is None:
         return JSONResponse(status_code=status.HTTP_404_NOT_FOUND,
                             content={'detail': 'Story not found'})
 

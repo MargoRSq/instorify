@@ -40,7 +40,7 @@ def fetch_stories_raw(username: str) -> list[dict]:
 
     stories = private_api.user_story_feed(user_pk)
 
-    if stories['reel'] == None:
+    if stories['reel'] is None:
         return []
 
     return stories['reel']['items']

@@ -1,4 +1,4 @@
-from fastapi import APIRouter, HTTPException
+from fastapi import APIRouter
 from plugins.instagram.users import (fetch_user_info)
 
 from models.schemas.instagram import User
