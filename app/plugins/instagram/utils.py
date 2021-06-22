@@ -6,10 +6,12 @@ def username_to_pk(username: str) -> int:
     search_results = private_api.username_info(username)
     return search_results['user']['pk']
 
+
 # instagram id(pk) to instagram username
 def pk_to_username(pk: int) -> str:
     search_results = private_api.user_info(pk)
     return search_results['user']['username']
+
 
 # fetching "following" accounts
 def fetch_following_pk(pk: int) -> list[int]:

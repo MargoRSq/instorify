@@ -1,7 +1,9 @@
+from app.models.schemas.instagram import UserInfoObject
+
 from plugins.instagram.clients.private_api import private_api
 
 
-def fetch_user_info(username: str) -> dict:
+def fetch_user_info(username: str) -> UserInfoObject:
     user = private_api.username_info(username)['user']
 
     object = {}

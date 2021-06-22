@@ -4,7 +4,6 @@ from time import sleep
 
 from instagram_private_api import (Client, ClientCookieExpiredError,
                                    ClientError, ClientLoginError,
-                                   ClientLoginRequiredError,
                                    ClientThrottledError)
 
 from plugins.instagram.clients.utils import (COOCKIE_PATH_PRIVATE, LOGIN, PASS,
@@ -13,19 +12,21 @@ from plugins.instagram.clients.utils import (COOCKIE_PATH_PRIVATE, LOGIN, PASS,
 MAX_TRY = 5
 
 
-def auth_without_settings():
+def auth_without_settings() -> Client:
     return Client(
-                username=LOGIN,
-                password=PASS,
-                on_login=lambda x: handle_login(x, COOCKIE_PATH_PRIVATE))
+        username=LOGIN,
+        password=PASS,
+        on_login=lambda x: handle_login(x, COOCKIE_PATH_PRIVATE))
 
-def auth_with_settings(settings):
+
+def auth_with_settings(settings) -> Client:
     return Client(
-                username=LOGIN,
-                password=PASS,
-                settings=settings)
+        username=LOGIN,
+        password=PASS,
+        settings=settings)
 
-def auth(count=0):
+
+def auth(count=0) -> Client:
     try:
         if not os.path.isfile(COOCKIE_PATH_PRIVATE):
             # If cookies exists
@@ -33,7 +34,8 @@ def auth(count=0):
         else:
             # Create cookies
             with open(COOCKIE_PATH_PRIVATE) as file_data:
-                cached_settings_private = json.load(file_data, object_hook=from_json)
+                cached_settings_private = json.load(
+                    file_data, object_hook=from_json)
                 # reuse auth settings
                 private_api = auth_with_settings(cached_settings_private)
 

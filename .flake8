@@ -1,0 +1,6 @@
+[flake8]
+--select=W292,E303,E305
+max-line-length = 120
+count = True
+hang_closing = True
+hang-closing = True

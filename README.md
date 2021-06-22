@@ -74,10 +74,14 @@ This starts the development server on http://localhost:8000.
 │   │       │   api.py          # main API router, that includes all routes with prefix
 │   │       ├───dependencies    # dependencies for api endpoints
 │   │       └───inst            # instagram routes
-│   └───plugins
-│       └───instagram           # instagram parse-plugins
-│           └───clients         # instagram web_api and private_api auth
+│   ├───plugins
+│   |   └───instagram           # instagram parse-plugins
+│   |       └───clients         # instagram web_api and private_api auth
+│   ├───models         # schemas and database models
+│   |   └───instagram
+│   |       └───schemas         # schemas with requests and response models
 └───cache       # cookie files with applications auth
+
 ```
 
 ## Developing steps
