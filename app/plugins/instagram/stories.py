@@ -43,6 +43,7 @@ def stories_raw_to_object(story_dict: dict) -> StoryObject:
 
     elif object['type'] == MediaTypes.VIDEO:
         object['content_url'] = story_dict['video_versions'][0]['url']
+        object['duration'] = story_dict['video_duration']
 
     object['height'] = story_dict['original_height']
     object['width'] = story_dict['original_width']
