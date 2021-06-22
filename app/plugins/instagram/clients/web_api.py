@@ -37,14 +37,15 @@ class WebApiClient(instagram_web_api.Client):
         enc_password = f"#PWD_INSTAGRAM_BROWSER:0:{time}:{self.password}"
 
         params = {
-                'username': self.username,
-                'enc_password': enc_password,
-                'queryParams': '{}',
-                'optIntoOneTap': False}
+            'username': self.username,
+            'enc_password': enc_password,
+            'queryParams': '{}',
+            'optIntoOneTap': False}
         self._init_rollout_hash()
 
-        login_res = self._make_request('https://www.instagram.com/accounts/login/ajax/', params=params)
-        if not login_res.get('status', '') == 'ok' or not login_res.get ('authenticated'):
+        login_res = self._make_request(
+            'https://www.instagram.com/accounts/login/ajax/', params=params)
+        if not login_res.get('status', '') == 'ok' or not login_res.get('authenticated'):
             raise ClientLoginError('Unable to login')
 
         if self.on_login:
@@ -55,15 +56,17 @@ class WebApiClient(instagram_web_api.Client):
 
 def auth_without_settings() -> WebApiClient:
     return WebApiClient(
-                username=LOGIN,
-                password=PASS,
-                on_login=lambda x: handle_login(x, COOCKIE_PATH_WEB))
+        username=LOGIN,
+        password=PASS,
+        on_login=lambda x: handle_login(x, COOCKIE_PATH_WEB))
+
 
 def auth_with_settings(settings) -> WebApiClient:
     return WebApiClient(
-                username=LOGIN,
-                password=PASS,
-                settings=settings)
+        username=LOGIN,
+        password=PASS,
+        settings=settings)
+
 
 def auth(count=0) -> WebApiClient:
     try:
@@ -73,7 +76,8 @@ def auth(count=0) -> WebApiClient:
         else:
             # Create cookies
             with open(COOCKIE_PATH_WEB) as file_data:
-                cached_settings_private = json.load(file_data, object_hook=from_json)
+                cached_settings_private = json.load(
+                    file_data, object_hook=from_json)
                 # Reuse auth settings
                 web_api = auth_with_settings(cached_settings_private)
 

@@ -3,6 +3,11 @@ from typing import Optional, TypedDict
 
 from instagram_private_api import MediaTypes
 from pydantic import BaseModel
+from starlette import status
+
+
+class NotFoundMessage(BaseModel):
+    detail: str
 
 
 class InstMediaTypes(IntEnum):
@@ -48,25 +53,23 @@ class User(BaseModel):
     media_count: int
 
 
-
 # Plugin functions schemas
-
 HighlightItemsObject = TypedDict('HighlightObjectPlugin', {
-        'id': int,
-        'type': InstMediaTypes,
-        'height': str,
-        'width': int,
-        'created_at': int,
-        'duration': Optional[float],
-        'content_url': str
+    'id': int,
+    'type': InstMediaTypes,
+    'height': str,
+    'width': int,
+    'created_at': int,
+    'duration': Optional[float],
+    'content_url': str
 })
 
 HighlightObject = TypedDict('HighlightObject', {
-        'id': int,
-        'title': str,
-        'created_at': int,
-        'media_count': int,
-        'preview_url': str
+    'id': int,
+    'title': str,
+    'created_at': int,
+    'media_count': int,
+    'preview_url': str
 })
 
 UserInfoObject = TypedDict('UserInfoObject', {
@@ -83,13 +86,13 @@ UserInfoObject = TypedDict('UserInfoObject', {
 })
 
 StoryObject = TypedDict('StoryObject', {
-        'id': int,
-        'audience': Optional[Audience],
-        'original_created_at': Optional[int],
-        'type': InstMediaTypes,
-        'height': str,
-        'width': int,
-        'created_at': int,
-        'duration': Optional[float],
-        'content_url': str
+    'id': int,
+    'audience': Optional[Audience],
+    'original_created_at': Optional[int],
+    'type': InstMediaTypes,
+    'height': str,
+    'width': int,
+    'created_at': int,
+    'duration': Optional[float],
+    'content_url': str
 })

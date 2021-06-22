@@ -35,14 +35,15 @@ def highlight_items_raw_to_object(items: list) -> list[HighlightItemsObject]:
 
     return objects
 
+
 def highlight_raw_to_object(raw: dict) -> HighlightObject:
     return {'id': int(raw['id'].split(':')[1]),
-                'title': raw['title'],
-                'created_at': raw['created_at'],
-                'media_count': raw['media_count'],
-                'preview_url': raw['cover_media']['cropped_image_version']['url']}
+            'title': raw['title'],
+            'created_at': raw['created_at'],
+            'media_count': raw['media_count'],
+            'preview_url': raw['cover_media']['cropped_image_version']['url']}
 
-# highlights
+
 def fetch_highlights(username: str) -> list[HighlightObject]:
     user_pk = username_to_pk(username)
     all_highlights = private_api.highlights_user_feed(user_pk)['tray']
@@ -54,11 +55,13 @@ def fetch_highlights(username: str) -> list[HighlightObject]:
 
     return objects
 
+
 def fetch_count_highlights(username: str) -> int:
     user_pk = username_to_pk(username)
     all_highlights = private_api.highlights_user_feed(user_pk)['tray']
 
     return len(all_highlights)
+
 
 def fetch_one_highlight(username: str, index: int) -> Union[HighlightObject, None]:
     user_pk = username_to_pk(username)
@@ -72,7 +75,9 @@ def fetch_one_highlight(username: str, index: int) -> Union[HighlightObject, Non
 
     return content_info
 
+
 # highlights by id
+
 def fetch_items_highlight_by_id(id: int) -> list[HighlightItemsObject]:
     highlight_reel_media = web_api.highlight_reel_media([id])
 
@@ -81,8 +86,15 @@ def fetch_items_highlight_by_id(id: int) -> list[HighlightItemsObject]:
 
     return items[::-1]
 
-def fetch_items_count_highlight_by_id(id: int, index: int) -> HighlightItemsObject:
-    return fetch_items_highlight_by_id(id)[index - 1]
+
+def fetch_items_highlight_by_id_by_index(id: int, index: int) -> HighlightItemsObject:
+    stories = fetch_items_highlight_by_id(id)
+
+    if len(stories) < index:
+        return None
+
+    return stories[index - 1]
+
 
 def fetch_count_highlight_by_id(id: int) -> int:
     highlight_reel_media = web_api.highlight_reel_media([id])

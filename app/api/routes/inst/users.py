@@ -1,5 +1,5 @@
-from fastapi import APIRouter, Body, Depends, HTTPException
-from plugins.instagram.profile import (fetch_user_info)
+from fastapi import APIRouter, HTTPException
+from plugins.instagram.users import (fetch_user_info)
 
 from models.schemas.instagram import User
 

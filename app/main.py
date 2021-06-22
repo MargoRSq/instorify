@@ -8,8 +8,10 @@ from api.routes.api import router as api_router
 
 origins_regex = r'http(s?)://localhost:3000'
 
+
 def get_application() -> FastAPI:
-    application = FastAPI(title='instorify-api', version='1.0.0', docs_url="/__docs", redoc_url=None)
+    application = FastAPI(title='instorify-api',
+                          version='1.0.0', docs_url="/__docs", redoc_url=None)
 
     application.add_middleware(
         CORSMiddleware,
