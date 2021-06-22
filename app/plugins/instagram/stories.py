@@ -1,8 +1,8 @@
 from typing import Union
 
-from models.schemas.instagram import StoryObject
 from instagram_private_api import MediaTypes
 
+from models.schemas.instagram import StoryObject
 from plugins.instagram.clients.private_api import private_api
 from plugins.instagram.utils import username_to_pk
 

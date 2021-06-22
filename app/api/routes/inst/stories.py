@@ -1,11 +1,11 @@
+from typing import List
+
 from fastapi import APIRouter, status
 from fastapi.responses import JSONResponse
 
-from plugins.instagram.stories import (fetch_one_story_by_index, fetch_stories,
-                                       fetch_count_stories)
-
-from models.schemas.instagram import StoryItem, NotFoundMessage
-from typing import List
+from models.schemas.instagram import NotFoundMessage, StoryItem
+from plugins.instagram.stories import (fetch_count_stories,
+                                       fetch_one_story_by_index, fetch_stories)
 
 router = APIRouter()
 
