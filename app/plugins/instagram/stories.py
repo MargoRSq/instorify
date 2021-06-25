@@ -17,6 +17,25 @@ def stories_raw_to_object(story_dict: dict) -> StoryObject:
     if 'imported_taken_at' in story_dict:
         object['original_created_at'] = story_dict['imported_taken_at']
 
+    if 'reel_mentions' in story_dict:
+        mentions = []
+        for human in story_dict['reel_mentions']:
+            mentions.append(human['user']['pk'])
+
+        object['mentions'] = mentions
+
+    if 'story_locations' in story_dict:
+        locations = []
+        for location in story_dict['story_locations']:
+            location_dict = location['location']
+            location = {
+                'name': location_dict['name'],
+                'lat': location_dict['lat'],
+                'lng': location_dict['lng']}
+            locations.append(location)
+
+        object['location'] = locations
+
     object['type'] = story_dict['media_type']
 
     if object['type'] == MediaTypes.PHOTO:
