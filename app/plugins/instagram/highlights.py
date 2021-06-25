@@ -1,6 +1,6 @@
 from typing import Union
 
-from app.models.schemas.instagram import HighlightItemsObject, HighlightObject
+from models.schemas.instagram import HighlightItemsObject, HighlightObject
 from instagram_private_api import MediaTypes
 
 from plugins.instagram.clients.private_api import private_api
