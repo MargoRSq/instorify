@@ -1,4 +1,4 @@
-from app.models.schemas.instagram import UserInfoObject
+from models.schemas.instagram import UserInfoObject
 
 from plugins.instagram.clients.private_api import private_api
 
