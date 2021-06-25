@@ -67,7 +67,7 @@ StoryObject = TypedDict('StoryObject', {
     'created_at': int,
     'duration': Optional[float],
     'content_url': str,
-    'location': Optional[List][LocationObject],
+    'location': Optional[List[LocationObject]],
     'mentions': Optional[List[int]]
     })
 
