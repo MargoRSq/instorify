@@ -19,8 +19,8 @@ def stories_raw_to_object(story_dict: dict) -> StoryObject:
 
     if 'reel_mentions' in story_dict:
         mentions = []
-        for human in story_dict['reel_mentions']:
-            mentions.append(human['user']['pk'])
+        for mention in story_dict['reel_mentions']:
+            mentions.append(mention['user']['pk'])
 
         object['mentions'] = mentions
 
