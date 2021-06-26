@@ -1,19 +1,29 @@
-from fastapi import APIRouter, Body, Depends, HTTPException
+from fastapi import APIRouter
 
-from plugins.instagram.posts import fetch_posts, fetch_one_post
+from api.errors.instagram import not_found_error
+from plugins.instagram.posts import fetch_posts_by_max_id, fetch_one_post, fetch_count_posts
 
 router = APIRouter()
 
 
 @router.get('/{username}/posts')
-def get_all_posts(username: str):
-    return {'data': fetch_posts(username)}
+def get_posts(username: str, max_id: str = None):
+    return fetch_posts_by_max_id(username, max_id)
+
+
+@router.get('/{username}/posts/count')
+def get_count_posts(username: str):
+    return fetch_count_posts(username)
+
 
 @router.get('/{username}/posts/{index_post}')
 def get_one_post(username: str, index_post: int):
+    from time import time
+    start = time()
     post = fetch_one_post(username, index_post)
+    end = time()
+    print(end - start)
+    if post is None:
+        return not_found_error('Post')
 
-    if post == None:
-        return HTTPException(404)
-    else:
-        return {'data': post}
+    return post

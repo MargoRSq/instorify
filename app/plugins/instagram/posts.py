@@ -1,11 +1,6 @@
-from pprint import pprint
 from instagram_private_api import MediaTypes
-import json
 from plugins.instagram.clients.private_api import private_api
-from plugins.instagram.clients.web_api import web_api
-from plugins.instagram.utils import username_to_pk
 
-from pprint import pprint
 
 def carousel_item(item: dict) -> list:
     items = []
@@ -56,10 +51,13 @@ def post_items_raw_to_object(items: list) -> list[dict]:
     for item in items:
         object = {}
 
-        if 'created_at' in item:
-            object['created_at'] = item['caption']['created_at']
+        if 'taken_at' in item:
+            object['created_at'] = item['taken_at']
+        if 'view_count' in item:
+            object['view_count'] = item['view_count']
+
         object['like_count'] = item['like_count']
-        object['id'] = int(item['id'])
+        object['id'] = item['id']
 
         if item['media_type'] == MediaTypes.VIDEO:
             object['type'] = MediaTypes.VIDEO
@@ -77,32 +75,26 @@ def post_items_raw_to_object(items: list) -> list[dict]:
 
     return objects
 
-def fetch_posts(username: str)  -> list[dict]:
-    posts = private_api.username_feed(username)
-    is_next = posts['more_available']
 
-    items = [*posts['items']]
-    while is_next:
-        next_max_id = posts['next_max_id']
-        posts = private_api.username_feed(username, max_id=next_max_id)
-        is_next = posts['more_available']
-        items = [*items, *posts['items']]
+def fetch_count_posts(username: str) -> list[dict]:
+    return private_api.username_info(username)['user']['media_count']
 
-    objects = post_items_raw_to_object(items)
 
-    return objects
+def fetch_posts_by_max_id(username: str, max_id: str):
+    posts = private_api.username_feed(username, max_id=max_id)
+    return post_items_raw_to_object(posts['items'])
+
 
 def fetch_one_post(username: str, index: int) -> dict:
     posts = private_api.username_feed(username)
     media_count = private_api.username_info(username)['user']['media_count']
     items = [*posts['items']]
 
-    count = len(items)
-
     if len(items) >= index:
         obj = items[index - 1]
         objects = post_items_raw_to_object([obj])
         return objects[0]
+
     elif index >= len(items) and index <= media_count:
         is_next = posts['more_available']
         while is_next:
@@ -111,10 +103,8 @@ def fetch_one_post(username: str, index: int) -> dict:
             is_next = posts['more_available']
             items = [*items, *posts['items']]
 
-            count+= len(items)
-            if count >= index:
+            if len(items) >= index:
                 obj = items[index - 1]
-                pprint(obj)
                 objects = post_items_raw_to_object([obj])
                 return objects[0]
     else:
