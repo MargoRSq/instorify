@@ -5,9 +5,10 @@ from models.schemas.instagram import Post, PostPhotoObject, PostVideoObject, Pos
 
 def carousel_item(item: dict) -> PostCarouselList:
     items = []
+
     for media in item['carousel_media']:
         object = {}
-        if 'video_duration' in media:
+        if media['media_type'] == MediaTypes.VIDEO:
             object.update(video_item(media))
         else:
             object.update(photo_item(media))
@@ -25,21 +26,11 @@ def video_item(item: dict) -> PostVideoObject:
     if 'view_count' in item:
         object['view_count'] = item['view_count']
 
-    if 'location' in item:
-        location_dict = item['location']
-        location = {
-            'name': location_dict['name'],
-            'lat': location_dict['lat'],
-            'lng': location_dict['lng']}
-        object['location'] = location
-
+    mentions = []
     if 'usertags' in item:
-        mentions = []
         for tag in item['usertags']['in']:
             mentions.append(tag['user']['pk'])
-        if not mentions:
-            mentions = None
-        object['mentions'] = mentions
+    object['mentions'] = mentions
 
     return object
 
@@ -67,13 +58,11 @@ def photo_item(item: dict) -> PostPhotoObject:
             if height > max_height:
                 object['content_url'] = image['url']
 
+    mentions = []
     if 'usertags' in item:
-        mentions = []
         for tag in item['usertags']['in']:
             mentions.append(tag['user']['pk'])
-        if not mentions:
-            mentions = None
-        object['mentions'] = mentions
+    object['mentions'] = mentions
 
     return object
 

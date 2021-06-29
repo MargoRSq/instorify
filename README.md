@@ -20,7 +20,7 @@
 
 ### Site urls:
 
-HEROKU: instorify-api.herokuapp.com
+Previw (Heroku): https://instorify-api.herokuapp.com/
 
 ### Requirements:
 
