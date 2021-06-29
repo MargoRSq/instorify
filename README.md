@@ -18,11 +18,9 @@
 
 ## Links
 
-* **TODO**
-
 ### Site urls:
 
-* **TODO**
+Preview (Heroku): https://instorify-api.herokuapp.com/
 
 ### Requirements:
 

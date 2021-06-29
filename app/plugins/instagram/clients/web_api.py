@@ -83,10 +83,10 @@ def auth(count=0) -> WebApiClient:
 
     except (ClientCookieExpiredError, ClientThrottledError,
             ClientLoginError, ClientError, Exception) as e:
-        print(f'{count + 1} try', e)
+        print(f'{count + 1} try |', e)
 
         if count == MAX_TRY:
-            exit()
+            raise e
 
         sleep(1)
         auth(count + 1)

@@ -1,5 +1,5 @@
 from enum import Enum, IntEnum
-from typing import List, Optional, TypedDict
+from typing import List, Optional, Union
 
 from instagram_private_api import MediaTypes
 from pydantic import BaseModel
@@ -19,62 +19,15 @@ class Audience(Enum):
     BESTIE = 'besties'
 
 
-# Plugin functions schemas
-LocationObject = TypedDict('LocationObject', {
-    'name': str,
-    'lat': float,
-    'lng': float
-    })
-
-HighlightItemsObject = TypedDict('HighlightObjectPlugin', {
-    'id': int,
-    'type': InstMediaTypes,
-    'height': str,
-    'width': int,
-    'created_at': int,
-    'duration': Optional[float],
-    'content_url': str
-    })
-
-HighlightObject = TypedDict('HighlightObject', {
-    'id': int,
-    'title': str,
-    'created_at': int,
-    'media_count': int,
-    'preview_url': str
-    })
-
-UserInfoObject = TypedDict('UserInfoObject', {
-    'id': int,
-    'username': str,
-    'full_name': str,
-    'profile_img': str,
-    'profile_info': str,
-    'is_private': bool,
-    'is_verified': bool,
-    'follower_count': int,
-    'following_count': int,
-    'media_count': int
-    })
-
-StoryObject = TypedDict('StoryObject', {
-    'id': int,
-    'audience': Optional[Audience],
-    'original_created_at': Optional[int],
-    'type': InstMediaTypes,
-    'height': str,
-    'width': int,
-    'created_at': int,
-    'duration': Optional[float],
-    'content_url': str,
-    'location': Optional[List[LocationObject]],
-    'mentions': Optional[List[int]]
-    })
+class Location(BaseModel):
+    name: str
+    lat: float
+    lng: float
 
 
 # Response models
 
-class StoryItem(BaseModel):
+class Story(BaseModel):
     id: int
     type: InstMediaTypes
     audience: Optional[Audience]
@@ -84,7 +37,7 @@ class StoryItem(BaseModel):
     original_created_at: Optional[int]
     height: int
     width: int
-    location: Optional[List[LocationObject]]
+    location: Optional[List[Location]]
     mentions: Optional[List[int]]
 
 
@@ -107,3 +60,30 @@ class User(BaseModel):
     follower_count: int
     following_count: int
     media_count: int
+
+
+class PostPhotoObject(BaseModel):
+    type: InstMediaTypes
+    height: Optional[int]
+    width: Optional[int]
+    content_url: str
+    mentions: Optional[List[int]]
+
+
+class PostVideoObject(BaseModel):
+    type: InstMediaTypes
+    duration: float
+    content_url: Optional[str]
+    mentions: Optional[List[int]]
+
+
+PostCarouselList = List[Union[PostPhotoObject, PostVideoObject]]
+
+
+class Post(BaseModel):
+    id: str
+    type: InstMediaTypes
+    created_at: int
+    location: Optional[Location]
+    like_count: int
+    items: List[Union[PostPhotoObject, PostVideoObject]]

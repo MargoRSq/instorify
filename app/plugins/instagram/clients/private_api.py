@@ -44,8 +44,7 @@ def auth(count=0) -> Client:
         print(f'{count + 1} try', e)
 
         if count == MAX_TRY:
-            exit()
-
+            raise e
         sleep(1)
         auth(count + 1)
 

@@ -1,6 +1,6 @@
 from typing import Union
 
-from models.schemas.instagram import HighlightItemsObject, HighlightObject
+from models.schemas.instagram import Story, HighlightItemPreview
 from instagram_private_api import MediaTypes
 
 from plugins.instagram.clients.private_api import private_api
@@ -8,7 +8,7 @@ from plugins.instagram.clients.web_api import web_api
 from plugins.instagram.utils import username_to_pk
 
 
-def highlight_items_raw_to_object(items: list) -> list[HighlightItemsObject]:
+def highlight_items_raw_to_object(items: list) -> list[Story]:
     objects = []
     for item in items:
         object = {}
@@ -36,7 +36,7 @@ def highlight_items_raw_to_object(items: list) -> list[HighlightItemsObject]:
     return objects
 
 
-def highlight_raw_to_object(raw: dict) -> HighlightObject:
+def highlight_raw_to_object(raw: dict) -> HighlightItemPreview:
     return {'id': int(raw['id'].split(':')[1]),
             'title': raw['title'],
             'created_at': raw['created_at'],
@@ -44,7 +44,7 @@ def highlight_raw_to_object(raw: dict) -> HighlightObject:
             'preview_url': raw['cover_media']['cropped_image_version']['url']}
 
 
-def fetch_highlights(username: str) -> list[HighlightObject]:
+def fetch_highlights(username: str) -> list[Story]:
     user_pk = username_to_pk(username)
     all_highlights = private_api.highlights_user_feed(user_pk)['tray']
 
@@ -63,7 +63,7 @@ def fetch_count_highlights(username: str) -> int:
     return len(all_highlights)
 
 
-def fetch_one_highlight(username: str, index: int) -> Union[HighlightObject, None]:
+def fetch_one_highlight(username: str, index: int) -> Union[Story, None]:
     user_pk = username_to_pk(username)
     all_highlights = private_api.highlights_user_feed(user_pk)['tray']
 
@@ -78,7 +78,7 @@ def fetch_one_highlight(username: str, index: int) -> Union[HighlightObject, Non
 
 # highlights by id
 
-def fetch_items_highlight_by_id(id: int) -> list[HighlightItemsObject]:
+def fetch_items_highlight_by_id(id: int) -> list[Story]:
     highlight_reel_media = web_api.highlight_reel_media([id])
 
     for highlight in highlight_reel_media['data']['reels_media']:
@@ -87,7 +87,7 @@ def fetch_items_highlight_by_id(id: int) -> list[HighlightItemsObject]:
     return items[::-1]
 
 
-def fetch_highlight_item_by_id(id: int, index: int) -> HighlightItemsObject:
+def fetch_highlight_item_by_id(id: int, index: int) -> Story:
     stories = fetch_items_highlight_by_id(id)
 
     if len(stories) < index:
