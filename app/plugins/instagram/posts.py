@@ -3,7 +3,7 @@ from plugins.instagram.clients.private_api import private_api
 from models.schemas.instagram import Post, PostPhotoObject, PostVideoObject, PostCarouselList
 
 
-def mentions_handler(item: dict) -> list[int]:
+def get_mentions(item: dict) -> list[int]:
     mentions = []
     if 'usertags' in item:
         for tag in item['usertags']['in']:
@@ -35,7 +35,7 @@ def video_item(item: dict) -> PostVideoObject:
     if 'view_count' in item:
         object['view_count'] = item['view_count']
 
-    object['mentions'] = mentions_handler(item)
+    object['mentions'] = get_mentions(item)
 
     return object
 
@@ -63,7 +63,7 @@ def photo_item(item: dict) -> PostPhotoObject:
             if height > max_height:
                 object['content_url'] = image['url']
 
-    object['mentions'] = mentions_handler(item)
+    object['mentions'] = get_mentions(item)
 
     return object
 
