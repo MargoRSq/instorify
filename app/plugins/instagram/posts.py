@@ -3,6 +3,15 @@ from plugins.instagram.clients.private_api import private_api
 from models.schemas.instagram import Post, PostPhotoObject, PostVideoObject, PostCarouselList
 
 
+def mentions_handler(item: dict) -> list[int]:
+    mentions = []
+    if 'usertags' in item:
+        for tag in item['usertags']['in']:
+            mentions.append(tag['user']['pk'])
+
+    return mentions
+
+
 def carousel_item(item: dict) -> PostCarouselList:
     items = []
 
@@ -10,7 +19,7 @@ def carousel_item(item: dict) -> PostCarouselList:
         object = {}
         if media['media_type'] == MediaTypes.VIDEO:
             object.update(video_item(media))
-        else:
+        elif media['media_type'] == MediaTypes.PHOTO:
             object.update(photo_item(media))
         items.append(object)
 
@@ -26,11 +35,7 @@ def video_item(item: dict) -> PostVideoObject:
     if 'view_count' in item:
         object['view_count'] = item['view_count']
 
-    mentions = []
-    if 'usertags' in item:
-        for tag in item['usertags']['in']:
-            mentions.append(tag['user']['pk'])
-    object['mentions'] = mentions
+    object['mentions'] = mentions_handler(item)
 
     return object
 
@@ -58,11 +63,7 @@ def photo_item(item: dict) -> PostPhotoObject:
             if height > max_height:
                 object['content_url'] = image['url']
 
-    mentions = []
-    if 'usertags' in item:
-        for tag in item['usertags']['in']:
-            mentions.append(tag['user']['pk'])
-    object['mentions'] = mentions
+    object['mentions'] = mentions_handler(item)
 
     return object
 
