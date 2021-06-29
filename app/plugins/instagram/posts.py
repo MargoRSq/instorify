@@ -1,6 +1,6 @@
 from instagram_private_api import MediaTypes
 from plugins.instagram.clients.private_api import private_api
-from models.schemas.instagram import PostObject, PostPhotoObject, PostVideoObject, PostCarouselList
+from models.schemas.instagram import Post, PostPhotoObject, PostVideoObject, PostCarouselList
 
 
 def carousel_item(item: dict) -> PostCarouselList:
@@ -20,7 +20,10 @@ def video_item(item: dict) -> PostVideoObject:
     object = {}
     object['content_url'] = item['video_versions'][0]['url']
     object['duration'] = item['video_duration']
-    object['view_count'] = item['view_count']
+    object['type'] = MediaTypes.VIDEO
+
+    if 'view_count' in item:
+        object['view_count'] = item['view_count']
 
     if 'location' in item:
         location_dict = item['location']
@@ -43,6 +46,7 @@ def video_item(item: dict) -> PostVideoObject:
 
 def photo_item(item: dict) -> PostPhotoObject:
     object = {}
+    object['type'] = MediaTypes.PHOTO
 
     height = None
     width = None
@@ -74,7 +78,7 @@ def photo_item(item: dict) -> PostPhotoObject:
     return object
 
 
-def post_items_raw_to_object(items: list) -> list[PostObject]:
+def post_items_raw_to_object(items: list) -> list[Post]:
     objects = []
 
     for item in items:
@@ -95,7 +99,7 @@ def post_items_raw_to_object(items: list) -> list[PostObject]:
 
         if item['media_type'] == MediaTypes.VIDEO:
             object['type'] = MediaTypes.VIDEO
-            object['items'] = video_item(item)
+            object['items'] = [video_item(item)]
 
         elif item['media_type'] == MediaTypes.CAROUSEL:
             object['type'] = MediaTypes.CAROUSEL
@@ -103,7 +107,7 @@ def post_items_raw_to_object(items: list) -> list[PostObject]:
 
         elif item['media_type'] == MediaTypes.PHOTO:
             object['type'] = MediaTypes.PHOTO
-            object['items'] = photo_item(item)
+            object['items'] = [photo_item(item)]
 
         objects.append(object)
 
@@ -114,6 +118,6 @@ def fetch_count_posts(username: str) -> int:
     return private_api.username_info(username)['user']['media_count']
 
 
-def fetch_posts(username: str, max_id: str) -> list[PostObject]:
+def fetch_posts(username: str, max_id: str) -> list[Post]:
     posts = private_api.username_feed(username, max_id=max_id)
     return post_items_raw_to_object(posts['items'])

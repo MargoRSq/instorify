@@ -4,7 +4,7 @@ from fastapi import APIRouter, status
 
 from api.errors.instagram import not_found_error
 from models.schemas.instagram import (HighlightItemPreview, NotFoundMessage,
-                                      StoryItem)
+                                      Story)
 from plugins.instagram.highlights import (fetch_count_highlight_by_id,
                                           fetch_count_highlights,
                                           fetch_highlight_item_by_id,
@@ -43,7 +43,7 @@ def get_highlight_by_index(username: str, highlight_index: int):
 
 
 @router.get('/{username}/highlights/items/{highlight_id}',
-            response_model=List[StoryItem],
+            response_model=List[Story],
             summary='Get user highlight by id')
 def get_highlight_by_id(highlight_id: int):
     return fetch_items_highlight_by_id(highlight_id)
@@ -57,7 +57,7 @@ def get_count_highlight_by_id(highlight_id: int):
 
 
 @router.get('/{username}/highlights/items/{highlight_id}/{index_media}',
-            response_model=StoryItem,
+            response_model=Story,
             summary='Get story by index from highlight',
             responses={status.HTTP_404_NOT_FOUND: {'model': NotFoundMessage}})
 def get_highlight_item_by_id(highlight_id: int, index_media: int):

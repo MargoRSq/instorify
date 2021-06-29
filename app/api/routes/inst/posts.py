@@ -1,6 +1,5 @@
 from fastapi import APIRouter
 
-from api.errors.instagram import not_found_error
 from plugins.instagram.posts import fetch_posts, fetch_count_posts
 from models.schemas.instagram import Post
 
