@@ -6,10 +6,9 @@ from instagram_private_api import (Client, ClientCookieExpiredError,
                                    ClientError, ClientLoginError,
                                    ClientThrottledError)
 
-from plugins.instagram.clients.utils import (COOCKIE_PATH_PRIVATE, LOGIN, PASS,
+from plugins.instagram.clients.utils import (COOCKIE_PATH_PRIVATE,
                                              from_json, handle_login)
-
-MAX_TRY = 5
+from core.config import LOGIN, PASS, MAX_CONN_TRY
 
 
 def auth_without_settings() -> Client:
@@ -43,7 +42,7 @@ def auth(count=0) -> Client:
             ClientLoginError, ClientError, Exception) as e:
         print(f'{count + 1} try', e)
 
-        if count == MAX_TRY:
+        if count == MAX_CONN_TRY:
             raise e
         sleep(1)
         auth(count + 1)

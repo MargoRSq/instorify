@@ -10,10 +10,9 @@ import instagram_web_api
 
 from instagram_web_api import (ClientCookieExpiredError, ClientError,
                                ClientLoginError, ClientThrottledError)
-from plugins.instagram.clients.utils import (COOCKIE_PATH_WEB, LOGIN, PASS,
+from plugins.instagram.clients.utils import (COOCKIE_PATH_WEB,
                                              from_json, handle_login)
-
-MAX_TRY = 5
+from core.config import LOGIN, PASS, MAX_CONN_TRY
 
 
 class WebApiClient(instagram_web_api.Client):
@@ -85,7 +84,7 @@ def auth(count=0) -> WebApiClient:
             ClientLoginError, ClientError, Exception) as e:
         print(f'{count + 1} try |', e)
 
-        if count == MAX_TRY:
+        if count == MAX_CONN_TRY:
             raise e
 
         sleep(1)
