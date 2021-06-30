@@ -79,18 +79,14 @@ def post_items_raw_to_object(items: list) -> list[Post]:
         object = {}
 
         if 'location' in item:
-            from pprint import pprint
-
             location_dict = item['location']
-            # pprint(location_dict)
 
+            location = {
+                'name': location_dict['name'],
+                }
             if ('lat' and 'lng') in location_dict:
-                location = {
-                    'name': location_dict['name'],
-                    'lat': location_dict['lat'],
-                    'lng': location_dict['lng']}
-            else:
-                location = {'name': location_dict['name']}
+                location['lat'] = location_dict['lat']
+                location['lng'] = location_dict['lng']
 
             object['location'] = location
 
