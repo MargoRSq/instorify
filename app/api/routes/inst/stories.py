@@ -1,10 +1,9 @@
 from typing import List
 
-from fastapi import APIRouter, status
+from fastapi import APIRouter, status, HTTPException
 from fastapi_cache.decorator import cache
 
 from models.schemas.instagram import NotFoundMessage, Story
-from api.errors.instagram import not_found_error
 from plugins.instagram.stories import (fetch_count_stories,
                                        fetch_one_story_by_index, fetch_stories)
 from core.config import ROUTES_CACHE_EXPIRES_TIME
@@ -34,6 +33,6 @@ async def get_one_story(username: str, index_story: int):
     story = fetch_one_story_by_index(username, index_story)
 
     if story is None:
-        return not_found_error('Story')
+        raise HTTPException(status_code=404, detail="story not found")
 
     return story

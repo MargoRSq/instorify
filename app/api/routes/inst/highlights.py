@@ -1,9 +1,8 @@
 from typing import List
 
-from fastapi import APIRouter, status
+from fastapi import APIRouter, status, HTTPException
 from fastapi_cache.decorator import cache
 
-from api.errors.instagram import not_found_error
 from models.schemas.instagram import (HighlightItemPreview, NotFoundMessage,
                                       Story)
 from plugins.instagram.highlights import (fetch_count_highlight_by_id,
@@ -74,6 +73,6 @@ async def get_highlight_item_by_id(highlight_id: int, index_media: int):
     highlight = fetch_highlight_item_by_id(highlight_id, index_media)
 
     if highlight is None:
-        return not_found_error('Story from highlight')
+        raise HTTPException(status_code=404, detail="highlight not found")
 
     return highlight
