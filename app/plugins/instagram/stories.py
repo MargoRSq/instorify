@@ -17,12 +17,12 @@ def stories_raw_to_object(story_dict: dict) -> Story:
     if 'imported_taken_at' in story_dict:
         object['original_created_at'] = story_dict['imported_taken_at']
 
+    mentions = []
     if 'reel_mentions' in story_dict:
-        mentions = []
+
         for mention in story_dict['reel_mentions']:
             mentions.append(mention['user']['pk'])
-
-        object['mentions'] = mentions
+    object['mentions'] = mentions
 
     if 'story_locations' in story_dict:
         locations = []

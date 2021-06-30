@@ -9,7 +9,7 @@ class NotFoundMessage(BaseModel):
     detail: str
 
 
-class InstMediaTypes(IntEnum):
+class InstMediaTypes(int, Enum):
     PHOTO = MediaTypes.PHOTO
     VIDEO = MediaTypes.VIDEO
     CAROUSEL = MediaTypes.CAROUSEL
@@ -21,8 +21,8 @@ class Audience(Enum):
 
 class Location(BaseModel):
     name: str
-    lat: float
-    lng: float
+    lat: Optional[float]
+    lng: Optional[float]
 
 
 # Response models
@@ -38,7 +38,7 @@ class Story(BaseModel):
     height: int
     width: int
     location: Optional[List[Location]]
-    mentions: Optional[List[int]]
+    mentions: List[int]
 
 
 class HighlightItemPreview(BaseModel):
@@ -64,17 +64,19 @@ class User(BaseModel):
 
 class PostPhotoObject(BaseModel):
     type: InstMediaTypes
-    height: Optional[int]
-    width: Optional[int]
+    height: int
+    width: int
     content_url: str
-    mentions: Optional[List[int]]
+    mentions: List[int]
 
 
 class PostVideoObject(BaseModel):
     type: InstMediaTypes
     duration: float
-    content_url: Optional[str]
-    mentions: Optional[List[int]]
+    height: int
+    width: int
+    content_url: str
+    mentions: List[int]
 
 
 PostCarouselList = List[Union[PostPhotoObject, PostVideoObject]]

@@ -28,9 +28,13 @@ def carousel_item(item: dict) -> PostCarouselList:
 
 def video_item(item: dict) -> PostVideoObject:
     object = {}
-    object['content_url'] = item['video_versions'][0]['url']
-    object['duration'] = item['video_duration']
     object['type'] = MediaTypes.VIDEO
+
+    object['content_url'] = item['video_versions'][0]['url']
+    object['height'] = item['video_versions'][0]['height']
+    object['width'] = item['video_versions'][0]['width']
+
+    object['duration'] = item['video_duration']
 
     if 'view_count' in item:
         object['view_count'] = item['view_count']
@@ -75,11 +79,19 @@ def post_items_raw_to_object(items: list) -> list[Post]:
         object = {}
 
         if 'location' in item:
+            from pprint import pprint
+
             location_dict = item['location']
-            location = {
-                'name': location_dict['name'],
-                'lat': location_dict['lat'],
-                'lng': location_dict['lng']}
+            # pprint(location_dict)
+
+            if ('lat' and 'lng') in location_dict:
+                location = {
+                    'name': location_dict['name'],
+                    'lat': location_dict['lat'],
+                    'lng': location_dict['lng']}
+            else:
+                location = {'name': location_dict['name']}
+
             object['location'] = location
 
         object['created_at'] = item['taken_at']

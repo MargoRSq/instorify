@@ -7,8 +7,8 @@ router = APIRouter()
 
 
 @router.get('/{username}/posts', response_model=list[Post], summary='Get user posts')
-def get_posts(username: str, max_id: str = None):
-    return fetch_posts(username, max_id)
+def get_posts(username: str, last_id: str = None):
+    return fetch_posts(username, last_id)
 
 
 @router.get('/{username}/posts/count', response_model=int, summary='Get count of user posts')
