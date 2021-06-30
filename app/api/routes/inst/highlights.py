@@ -1,7 +1,7 @@
 from typing import List
 
 from fastapi import APIRouter, status, HTTPException
-from fastapi_cache.decorator import cache
+from api.routes.inst.utils import cache
 
 from models.schemas.instagram import (HighlightItemPreview, NotFoundMessage,
                                       Story)
@@ -43,7 +43,7 @@ async def get_highlight_by_index(username: str, highlight_index: int):
     highlight = fetch_one_highlight(username, highlight_index)
 
     if highlight is None:
-        return not_found_error('Highlight')
+        raise HTTPException(status_code=404, detail="highlight not found")
 
     return highlight
 

@@ -1,5 +1,5 @@
 from fastapi import APIRouter
-from fastapi_cache.decorator import cache
+from api.routes.inst.utils import cache
 
 from plugins.instagram.posts import fetch_posts, fetch_count_posts
 from models.schemas.instagram import Post

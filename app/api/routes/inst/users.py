@@ -1,5 +1,5 @@
 from fastapi import APIRouter
-from fastapi_cache.decorator import cache
+from api.routes.inst.utils import cache
 
 from plugins.instagram.users import (fetch_user_info)
 

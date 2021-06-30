@@ -1,7 +1,7 @@
 from typing import List
 
 from fastapi import APIRouter, status, HTTPException
-from fastapi_cache.decorator import cache
+from api.routes.inst.utils import cache
 
 from models.schemas.instagram import NotFoundMessage, Story
 from plugins.instagram.stories import (fetch_count_stories,
