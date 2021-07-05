@@ -1,8 +1,7 @@
-from sys import flags
 import uvicorn
 import aioredis
 
-from fastapi import FastAPI, applications
+from fastapi import FastAPI
 from fastapi.exception_handlers import (http_exception_handler,
                                         request_validation_exception_handler)
 from fastapi.exceptions import RequestValidationError
