@@ -1,9 +1,9 @@
 from fastapi import APIRouter
 from fastapi_cache.decorator import cache
 
-from app.core.config import ROUTES_CACHE_EXPIRES_TIME
 from app.models.schemas.instagram import Post
 from app.plugins.instagram.posts import fetch_posts, fetch_count_posts
+from app.core.config import ROUTES_CACHE_EXPIRES_TIME
 
 
 router = APIRouter()

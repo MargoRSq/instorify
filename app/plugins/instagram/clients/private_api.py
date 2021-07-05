@@ -8,20 +8,20 @@ from instagram_private_api import (Client, ClientCookieExpiredError,
 
 from app.plugins.instagram.clients.utils import (COOCKIE_PATH_PRIVATE,
                                              from_json, handle_login)
-from app.core.config import LOGIN, PASS, MAX_CONN_TRY
+from app.core.config import INSTAGRAM_LOGIN, INSTAGRAM_PASS, PLUGINS_ACCOUNTS_MAX_RETRY
 
 
 def auth_without_settings() -> Client:
     return Client(
-        username=LOGIN,
-        password=PASS,
+        username=INSTAGRAM_LOGIN,
+        password=INSTAGRAM_PASS,
         on_login=lambda x: handle_login(x, COOCKIE_PATH_PRIVATE))
 
 
 def auth_with_settings(settings) -> Client:
     return Client(
-        username=LOGIN,
-        password=PASS,
+        username=INSTAGRAM_LOGIN,
+        password=INSTAGRAM_PASS,
         settings=settings)
 
 
@@ -42,7 +42,7 @@ def auth(count=0) -> Client:
             ClientLoginError, ClientError, Exception) as e:
         print(f'{count + 1} try', e)
 
-        if count == MAX_CONN_TRY:
+        if count == PLUGINS_ACCOUNTS_MAX_RETRY:
             raise e
         sleep(1)
         auth(count + 1)

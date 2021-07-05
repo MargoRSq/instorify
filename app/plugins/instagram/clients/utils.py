@@ -2,10 +2,10 @@ import codecs
 import json
 import os
 
-from app.core.config import LOGIN, COOKIE_PATH
+from app.core.config import INSTAGRAM_LOGIN, PLUGINS_ACCOUNTS_COOKIE_PATH
 
-COOCKIE_PATH_PRIVATE = COOKIE_PATH + f'/instagram_private_cookie_{LOGIN}.json'
-COOCKIE_PATH_WEB = COOKIE_PATH + f'/instagram_web_cookie_{LOGIN}.json'
+COOCKIE_PATH_PRIVATE = PLUGINS_ACCOUNTS_COOKIE_PATH + f'/instagram_private_cookie_{INSTAGRAM_LOGIN}.json'
+COOCKIE_PATH_WEB = PLUGINS_ACCOUNTS_COOKIE_PATH + f'/instagram_web_cookie_{INSTAGRAM_LOGIN}.json'
 
 
 def to_json(python_object):
@@ -21,9 +21,9 @@ def from_json(json_object):
     return json_object
 
 
-def handle_login(api, cookie_path):
-    if not os.path.isdir(COOKIE_PATH):
-        os.mkdir(COOKIE_PATH)
+def handle_login(api, PLUGINS_ACCOUNTS_COOKIE_PATH):
+    if not os.path.isdir(PLUGINS_ACCOUNTS_COOKIE_PATH):
+        os.mkdir(PLUGINS_ACCOUNTS_COOKIE_PATH)
     cache_settings = api.settings
-    with open(cookie_path, 'w') as outfile:
+    with open(PLUGINS_ACCOUNTS_COOKIE_PATH, 'w') as outfile:
         json.dump(cache_settings, outfile, default=to_json, indent='\t')

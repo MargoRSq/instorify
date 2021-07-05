@@ -1,22 +1,22 @@
 from starlette.config import Config
 
-DOCS_URL = "/__docs"
-REDOC_URL = None
+API_DOCS_URL = "/__docs"
+API_REDOC_URL = None
 
-VERSION = "0.1.0"
+API_VERSION = "0.1.1"
 
-PROJECT_NAME = "instorify-api"
+API_PROJECT_NAME = "instorify-api"
 
-MAX_CONN_TRY = 5
-COOKIE_PATH = '../cache'
+PLUGINS_ACCOUNTS_MAX_RETRY = 5
+PLUGINS_ACCOUNTS_COOKIE_PATH = '../cache'
 
 
 config = Config(".env")
 
-LOGIN: str = config("LOGIN")
-PASS: str = config("PASS")
+INSTAGRAM_LOGIN: str = config("INSTAGRAM_LOGIN")
+INSTAGRAM_PASS: str = config("INSTAGRAM_PASS")
 
 REDIS_URL: str = config("REDIS_URL")
 
 NO_ROUTES_CACHE: bool = config("NO_ROUTES_CACHE")
-ROUTES_CACHE_EXPIRES_TIME = 0 if NO_ROUTES_CACHE else 180
+ROUTES_CACHE_EXPIRES_TIME = None if NO_ROUTES_CACHE else 180

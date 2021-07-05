@@ -13,14 +13,14 @@ from starlette.exceptions import HTTPException as StarletteHTTPException
 from starlette.responses import JSONResponse
 
 from app.api.routes.api import router as api_router
-from app.core.config import DOCS_URL, PROJECT_NAME, REDIS_URL, REDOC_URL, VERSION
+from app.core.config import API_DOCS_URL, API_PROJECT_NAME, REDIS_URL, API_REDOC_URL, API_VERSION
 
 origins_regex = r'http(s?)://localhost:3000'
 
 
 def application() -> FastAPI:
-    application = FastAPI(title=PROJECT_NAME,
-                          version=VERSION, docs_url=DOCS_URL, redoc_url=REDOC_URL)
+    application = FastAPI(title=API_PROJECT_NAME,
+                          version=API_VERSION, docs_url=API_DOCS_URL, redoc_url=API_REDOC_URL)
 
     application.add_middleware(
         CORSMiddleware,

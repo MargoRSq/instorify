@@ -3,6 +3,7 @@ from typing import List
 from fastapi import APIRouter, status, HTTPException
 from fastapi_cache.decorator import cache
 
+from app.api.errors.instagram import raise_not_found
 from app.models.schemas.instagram import (HighlightItemPreview, NotFoundMessage,
                                       Story)
 from app.plugins.instagram.highlights import (fetch_count_highlight_by_id,
@@ -35,14 +36,13 @@ async def get_count_highlights(username: str):
 
 @router.get('/{username}/highlights/{highlight_index}',
             response_model=HighlightItemPreview,
-            summary='Get user highlight by index',
-            responses={status.HTTP_404_NOT_FOUND: {'model': NotFoundMessage}})
+            summary='Get user highlight by index')
 @cache(expire=ROUTES_CACHE_EXPIRES_TIME)
 async def get_highlight_by_index(username: str, highlight_index: int):
     highlight = fetch_one_highlight(username, highlight_index)
 
     if highlight is None:
-        raise HTTPException(status_code=404, detail="highlight not found")
+        raise_not_found('highlight')
 
     return highlight
 
@@ -65,13 +65,12 @@ async def get_count_highlight_by_id(highlight_id: int):
 
 @router.get('/{username}/highlights/items/{highlight_id}/{index_media}',
             response_model=Story,
-            summary='Get story by index from highlight',
-            responses={status.HTTP_404_NOT_FOUND: {'model': NotFoundMessage}})
+            summary='Get story by index from highlight')
 @cache(expire=ROUTES_CACHE_EXPIRES_TIME)
 async def get_highlight_item_by_id(highlight_id: int, index_media: int):
     highlight = fetch_highlight_item_by_id(highlight_id, index_media)
 
     if highlight is None:
-        raise HTTPException(status_code=404, detail="highlight not found")
+        raise_not_found('highlight')
 
     return highlight
