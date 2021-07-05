@@ -87,7 +87,6 @@ optional = false
 python-versions = ">=3.7,<4.0"
 
 [package.dependencies]
-aioredis = {version = "*", optional = true, markers = "extra == \"redis\" or extra == \"all\""}
 fastapi = "*"
 python-dateutil = "*"
 uvicorn = "*"
@@ -246,7 +245,7 @@ standard = ["websockets (>=9.1)", "httptools (>=0.2.0,<0.3.0)", "watchgod (>=0.6
 [metadata]
 lock-version = "1.1"
 python-versions = "^3.9"
-content-hash = "c7f6cb4195fe9ab3031f73788d6be6d81d5ed240aa8b60068e03cced6f0b1096"
+content-hash = "3958bc9f40e8a3118e55471c43c2c439de07eaf559021f7b859a7ca67e746833"
 
 [metadata.files]
 aioredis = [
