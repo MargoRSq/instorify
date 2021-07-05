@@ -1,18 +1,17 @@
 from typing import List
 
 from fastapi import APIRouter, status, HTTPException
-from api.routes.inst.utils import cache
+from fastapi_cache.decorator import cache
 
-from models.schemas.instagram import (HighlightItemPreview, NotFoundMessage,
+from app.models.schemas.instagram import (HighlightItemPreview, NotFoundMessage,
                                       Story)
-from plugins.instagram.highlights import (fetch_count_highlight_by_id,
+from app.plugins.instagram.highlights import (fetch_count_highlight_by_id,
                                           fetch_count_highlights,
                                           fetch_highlight_item_by_id,
                                           fetch_highlights,
                                           fetch_items_highlight_by_id,
                                           fetch_one_highlight)
-
-from core.config import ROUTES_CACHE_EXPIRES_TIME
+from app.core.config import ROUTES_CACHE_EXPIRES_TIME
 
 router = APIRouter()
 

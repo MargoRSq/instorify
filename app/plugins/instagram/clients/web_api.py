@@ -10,9 +10,9 @@ import instagram_web_api
 
 from instagram_web_api import (ClientCookieExpiredError, ClientError,
                                ClientLoginError, ClientThrottledError)
-from plugins.instagram.clients.utils import (COOCKIE_PATH_WEB,
+from app.plugins.instagram.clients.utils import (COOCKIE_PATH_WEB,
                                              from_json, handle_login)
-from core.config import LOGIN, PASS, MAX_CONN_TRY
+from app.core.config import LOGIN, PASS, MAX_CONN_TRY
 
 
 class WebApiClient(instagram_web_api.Client):

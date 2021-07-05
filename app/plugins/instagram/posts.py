@@ -1,6 +1,7 @@
 from instagram_private_api import MediaTypes
-from plugins.instagram.clients.private_api import private_api
-from models.schemas.instagram import Post, PostPhotoObject, PostVideoObject, PostCarouselList
+
+from app.plugins.instagram.clients.private_api import private_api
+from app.models.schemas.instagram import Post, PostPhotoObject, PostVideoObject, PostCarouselList
 
 
 def get_mentions(item: dict) -> list[int]:

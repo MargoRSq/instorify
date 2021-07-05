@@ -2,9 +2,9 @@ from typing import Union
 
 from instagram_private_api import MediaTypes
 
-from models.schemas.instagram import Story
-from plugins.instagram.clients.private_api import private_api
-from plugins.instagram.utils import username_to_pk
+from app.models.schemas.instagram import Story
+from app.plugins.instagram.clients.private_api import private_api
+from app.plugins.instagram.utils import username_to_pk
 
 
 def stories_raw_to_object(story_dict: dict) -> Story:

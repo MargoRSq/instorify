@@ -2,7 +2,7 @@ import codecs
 import json
 import os
 
-from core.config import LOGIN, COOKIE_PATH
+from app.core.config import LOGIN, COOKIE_PATH
 
 COOCKIE_PATH_PRIVATE = COOKIE_PATH + f'/instagram_private_cookie_{LOGIN}.json'
 COOCKIE_PATH_WEB = COOKIE_PATH + f'/instagram_web_cookie_{LOGIN}.json'

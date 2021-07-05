@@ -6,9 +6,9 @@ from instagram_private_api import (Client, ClientCookieExpiredError,
                                    ClientError, ClientLoginError,
                                    ClientThrottledError)
 
-from plugins.instagram.clients.utils import (COOCKIE_PATH_PRIVATE,
+from app.plugins.instagram.clients.utils import (COOCKIE_PATH_PRIVATE,
                                              from_json, handle_login)
-from core.config import LOGIN, PASS, MAX_CONN_TRY
+from app.core.config import LOGIN, PASS, MAX_CONN_TRY
 
 
 def auth_without_settings() -> Client:

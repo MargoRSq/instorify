@@ -1,12 +1,12 @@
 from typing import List
 
 from fastapi import APIRouter, status, HTTPException
-from api.routes.inst.utils import cache
+from fastapi_cache.decorator import cache
 
-from models.schemas.instagram import NotFoundMessage, Story
-from plugins.instagram.stories import (fetch_count_stories,
+from app.models.schemas.instagram import NotFoundMessage, Story
+from app.plugins.instagram.stories import (fetch_count_stories,
                                        fetch_one_story_by_index, fetch_stories)
-from core.config import ROUTES_CACHE_EXPIRES_TIME
+from app.core.config import ROUTES_CACHE_EXPIRES_TIME
 
 
 router = APIRouter()
