@@ -5,20 +5,19 @@ from fastapi_cache.decorator import cache
 
 from app.api.errors.instagram import raise_not_found
 from app.models.schemas.instagram import (HighlightItemPreview, NotFoundMessage,
-                                      Story)
+                                          Story)
 from app.plugins.instagram.highlights import (fetch_count_highlight_by_id,
-                                          fetch_count_highlights,
-                                          fetch_highlight_item_by_id,
-                                          fetch_highlights,
-                                          fetch_items_highlight_by_id,
-                                          fetch_one_highlight)
+                                              fetch_count_highlights,
+                                              fetch_highlight_item_by_id,
+                                              fetch_highlights,
+                                              fetch_items_highlight_by_id,
+                                              fetch_one_highlight)
 from app.core.config import ROUTES_CACHE_EXPIRES_TIME
 
 router = APIRouter()
 
 
 @router.get('/{username}/highlights',
-
             response_model=List[HighlightItemPreview],
             summary='Get all user highlights')
 @cache(expire=ROUTES_CACHE_EXPIRES_TIME)

@@ -13,12 +13,12 @@ from starlette.exceptions import HTTPException as StarletteHTTPException
 from starlette.responses import JSONResponse
 
 from app.api.routes.api import router as api_router
-from app.core.config import API_DOCS_URL, API_PROJECT_NAME, REDIS_URL, API_REDOC_URL, API_VERSION
+from app.core.config import API_DOCS_URL, API_PROJECT_NAME, REDIS_URL, API_REDOC_URL, API_VERSION, API_DEBUG, API_RELOAD
 
 origins_regex = r'http(s?)://localhost:3000'
 
 
-def application() -> FastAPI:
+async def start() -> FastAPI:
     application = FastAPI(title=API_PROJECT_NAME,
                           version=API_VERSION, docs_url=API_DOCS_URL, redoc_url=API_REDOC_URL)
 
@@ -49,11 +49,4 @@ def application() -> FastAPI:
     async def validation_exception_handler(request, exc):
         return await request_validation_exception_handler(request, exc)
 
-    return application
-
-
-application = application()
-
-
-def start():
-    uvicorn.run("app.main:application", debug=False, reload=True)
+    uvicorn.run(application, debug=API_DEBUG, reload=API_RELOAD)
