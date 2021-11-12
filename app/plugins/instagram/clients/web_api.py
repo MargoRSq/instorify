@@ -12,8 +12,9 @@ from instagram_web_api import (ClientCookieExpiredError, ClientError,
                                ClientLoginError, ClientThrottledError)
 
 from app.plugins.instagram.clients.utils import (COOCKIE_PATH_WEB,
-                                                 from_json, handle_login)
-from app.core.config import INSTAGRAM_LOGIN, INSTAGRAM_PASS, PLUGINS_ACCOUNTS_MAX_RETRY
+                                             from_json,
+                                             handle_login_web)
+from app.core.config import INSTAGRAM_LOGIN, INSTAGRAM_PASS, PLUGINS_ACCOUNTS_MAX_RETRY, PLUGINS_ACCOUNTS_COOKIE_PATH
 
 
 class WebApiClient(instagram_web_api.Client):
@@ -58,7 +59,7 @@ def auth_without_settings() -> WebApiClient:
     return WebApiClient(
         username=INSTAGRAM_LOGIN,
         password=INSTAGRAM_PASS,
-        on_login=lambda x: handle_login(x, COOCKIE_PATH_WEB))
+        on_login=lambda x: handle_login_web(x, PLUGINS_ACCOUNTS_COOKIE_PATH))
 
 
 def auth_with_settings(settings) -> WebApiClient:

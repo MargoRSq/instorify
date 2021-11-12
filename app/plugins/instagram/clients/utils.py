@@ -21,9 +21,16 @@ def from_json(json_object):
     return json_object
 
 
-def handle_login(api, PLUGINS_ACCOUNTS_COOKIE_PATH):
+def handle_login_private(api, PLUGINS_ACCOUNTS_COOKIE_PATH):
     if not os.path.isdir(PLUGINS_ACCOUNTS_COOKIE_PATH):
         os.mkdir(PLUGINS_ACCOUNTS_COOKIE_PATH)
     cache_settings = api.settings
-    with open(PLUGINS_ACCOUNTS_COOKIE_PATH, 'w') as outfile:
+    with open(COOCKIE_PATH_PRIVATE, 'w') as outfile:
+        json.dump(cache_settings, outfile, default=to_json, indent='\t')
+
+def handle_login_web(api, PLUGINS_ACCOUNTS_COOKIE_PATH):
+    if not os.path.isdir(PLUGINS_ACCOUNTS_COOKIE_PATH):
+        os.mkdir(PLUGINS_ACCOUNTS_COOKIE_PATH)
+    cache_settings = api.settings
+    with open(COOCKIE_PATH_WEB, 'w') as outfile:
         json.dump(cache_settings, outfile, default=to_json, indent='\t')

@@ -14,13 +14,13 @@ router = APIRouter()
 
 
 @router.get('/{username}/stories', response_model=List[Story], summary='Get all user stories')
-@cache(expire=ROUTES_CACHE_EXPIRES_TIME)
+# @cache(expire=ROUTES_CACHE_EXPIRES_TIME)
 async def get_all_stories(username: str):
     return fetch_stories(username)
 
 
 @router.get('/{username}/stories/count', response_model=int, summary='Get count of user stories')
-@cache(expire=ROUTES_CACHE_EXPIRES_TIME)
+# @cache(expire=ROUTES_CACHE_EXPIRES_TIME)
 async def get_count_stories(username: str):
     return fetch_count_stories(username)
 
@@ -28,7 +28,7 @@ async def get_count_stories(username: str):
 @router.get('/{username}/stories/{index_story}',
             response_model=Story,
             summary='Get user story by index')
-@cache(expire=ROUTES_CACHE_EXPIRES_TIME)
+# @cache(expire=ROUTES_CACHE_EXPIRES_TIME)
 async def get_one_story(username: str, index_story: int):
     story = fetch_one_story_by_index(username, index_story)
 

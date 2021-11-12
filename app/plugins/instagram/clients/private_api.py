@@ -7,15 +7,19 @@ from instagram_private_api import (Client, ClientCookieExpiredError,
                                    ClientThrottledError)
 
 from app.plugins.instagram.clients.utils import (COOCKIE_PATH_PRIVATE,
-                                             from_json, handle_login)
-from app.core.config import INSTAGRAM_LOGIN, INSTAGRAM_PASS, PLUGINS_ACCOUNTS_MAX_RETRY
+                                             from_json,
+                                             handle_login_private)
+from app.core.config import (INSTAGRAM_LOGIN,
+                         INSTAGRAM_PASS,
+                         PLUGINS_ACCOUNTS_MAX_RETRY,
+                         PLUGINS_ACCOUNTS_COOKIE_PATH)
 
 
 def auth_without_settings() -> Client:
     return Client(
         username=INSTAGRAM_LOGIN,
         password=INSTAGRAM_PASS,
-        on_login=lambda x: handle_login(x, COOCKIE_PATH_PRIVATE))
+        on_login=lambda x: handle_login_private(x, PLUGINS_ACCOUNTS_COOKIE_PATH))
 
 
 def auth_with_settings(settings) -> Client:
