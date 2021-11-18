@@ -1,11 +1,11 @@
 from typing import Union
 
-from models.schemas.instagram import Story, HighlightItemPreview
 from instagram_private_api import MediaTypes
 
-from plugins.instagram.clients.private_api import private_api
-from plugins.instagram.clients.web_api import web_api
-from plugins.instagram.utils import username_to_pk
+from app.models.schemas.instagram import Story, HighlightItemPreview
+from app.plugins.instagram.clients.private_api import private_api
+from app.plugins.instagram.clients.web_api import web_api
+from app.plugins.instagram.utils import username_to_pk
 
 
 def highlight_items_raw_to_object(items: list) -> list[Story]:

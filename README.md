@@ -1,4 +1,4 @@
-# Dream Renovation
+# instorify
 
 ## Sections
 1. [Links](#links)
@@ -24,43 +24,34 @@ Preview (Heroku): https://instorify-api.herokuapp.com/
 
 ### Requirements:
 
-Python 3.9 required
+Python 3.9.6 required
 
 * **TODO**
 
 ## Install
 
 ```bash
-pipenv install --dev
-```
-or if you don't want to use pipenv and want to store dependencies in project dir
-```bash
-pip install virtualenv --upgrade
-python -m venv env/
-cd env/Script
-activate.bat
-cd ../../
-pip install -r requirements.txt
+poetry install
 ```
 
 ## Start developing
 
-Start uvicorn server with API using these commands:
+Start uvicorn server with API using this command:
 ```bash
-pipenv shell
-cd app/
-uvicorn main:app
+poetry run uvicorn --host=0.0.0.0 app.main:app --reload
 ```
 This starts the development server on http://localhost:8000.
 
 
 ## Scripts flags
 
-|`uvicorn main:app <flag>`    |Description|
+|`uvicorn app.main:app <flag>`    |Description|
 |-------------------|-----------|
 |`--reload`         |Run app with auto-reload|
 |`--env-file PATH`  |Run app with env-variables from PATH|
 |`--log-config PATH`|Run app with logging in log from PATH|
+|`--port=8000`      |Run app on 8000 port|
+|`--host=0.0.0.0`   |Run app on localhost|
 
 ## Structure
 

@@ -1,17 +1,16 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
-from instagram_private_api.errors import ClientError
-
-from api.errors.instagram import username_error
-from api.routes.api import router as api_router
+from app.api.routes.api import router
+from app.core.config import API_DOCS_URL, API_PROJECT_NAME,  API_REDOC_URL, API_VERSION
+from app.api.errors.exceptions_handlers import subscribe_exception_handlers
 
 origins_regex = r'http(s?)://localhost:3000'
 
 
 def get_application() -> FastAPI:
-    application = FastAPI(title='instorify-api',
-                          version='1.0.0', docs_url="/__docs", redoc_url=None)
+    application = FastAPI(title=API_PROJECT_NAME,
+                          version=API_VERSION, docs_url=API_DOCS_URL, redoc_url=API_REDOC_URL)
 
     application.add_middleware(
         CORSMiddleware,
@@ -20,9 +19,9 @@ def get_application() -> FastAPI:
         allow_methods=["*"],
         )
 
-    application.include_router(api_router)
+    application.include_router(router)
 
-    application.add_exception_handler(ClientError, username_error)
+    subscribe_exception_handlers(application)
 
     return application
 
