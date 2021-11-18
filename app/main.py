@@ -1,7 +1,7 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
-from app.api.routes.inst.api import router as api_router
+from app.api.routes.api import router
 from app.core.config import API_DOCS_URL, API_PROJECT_NAME,  API_REDOC_URL, API_VERSION
 from app.api.errors.exceptions_handlers import subscribe_exception_handlers
 
@@ -19,7 +19,7 @@ def get_application() -> FastAPI:
         allow_methods=["*"],
         )
 
-    application.include_router(api_router)
+    application.include_router(router)
 
     subscribe_exception_handlers(application)
 

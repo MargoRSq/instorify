@@ -42,7 +42,6 @@ async def get_highlight_by_index(username: str, highlight_index: int):
 @router.get('/{username}/highlights/items/{highlight_id}',
             response_model=List[Story],
             summary='Get user highlight by id')
-# @cache(expire=ROUTES_CACHE_EXPIRES_TIME)
 async def get_highlight_by_id(highlight_id: int):
     return fetch_items_highlight_by_id(highlight_id)
 

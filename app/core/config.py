@@ -16,6 +16,3 @@ config = Config(".env")
 
 INSTAGRAM_LOGIN: str = config("INSTAGRAM_LOGIN")
 INSTAGRAM_PASS: str = config("INSTAGRAM_PASS")
-
-NO_ROUTES_CACHE: bool = config("NO_ROUTES_CACHE")
-ROUTES_CACHE_EXPIRES_TIME = None if NO_ROUTES_CACHE else 180
