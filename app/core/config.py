@@ -12,7 +12,8 @@ API_PROJECT_NAME = "instorify-api"
 PLUGINS_ACCOUNTS_MAX_RETRY = 5
 PLUGINS_ACCOUNTS_COOKIE_PATH = os.path.join(os.getcwd(), 'cache')
 
-config = Config(".env")
+# config = Config(".env")
+config = Config("/code/app/.env")
 
 INSTAGRAM_LOGIN: str = config("INSTAGRAM_LOGIN")
 INSTAGRAM_PASS: str = config("INSTAGRAM_PASS")
