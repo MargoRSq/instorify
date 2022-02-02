@@ -1,35 +1,24 @@
-FROM python:3.10.2-alpine as requirements-stage
+FROM python:3.9-slim
 
-WORKDIR /tmp
-RUN apk update && apk upgrade
-RUN apk add --no-cache bash\
-                       python2 \
-                       pkgconfig \
-                       git \
-                       gcc \
-                       openldap \
-                       libcurl \
-                       python2-dev \
-                       gpgme-dev \
-                       libc-dev \
-    && rm -rf /var/cache/apk/*
-RUN wget https://bootstrap.pypa.io/get-pip.py && python get-pip.py
-RUN pip install setuptools==30.1.0
+ENV PYTHONUNBUFFERED 1
+ENV PYTHONDONTWRITEBYTECODE 1
 
-RUN  pip install poetry
+EXPOSE 8000
+WORKDIR /app
 
-COPY ./pyproject.toml ./poetry.lock* /tmp/
+RUN apt-get update && \
+    apt-get install -y --no-install-recommends netcat gcc python3-dev \
+    && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
 
-RUN poetry export -f requirements.txt --output requirements.txt --without-hashes
+COPY poetry.lock pyproject.toml ./
+COPY .env ./
 
-FROM python:3.10.2-alpine
+RUN pip install poetry==1.1 && \
+    poetry config virtualenvs.in-project true && \
+    poetry install --no-dev
+    # && apt purge -y netcat gcc python3-dev \
+    # && apt clean -y && apt autoremove -y \
 
-WORKDIR /code
+COPY . ./
 
-COPY --from=requirements-stage /tmp/requirements.txt /code/requirements.txt
-
-RUN pip install --no-cache-dir --upgrade -r /code/requirements.txt
-
-COPY ./app /code/app
-
-CMD ["uvicorn", "app.main:app", "--host", "0.0.0.0", "--port", "8080"]
+CMD poetry run uvicorn --host=0.0.0.0 app.main:app
