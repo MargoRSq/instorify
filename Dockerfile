@@ -1,4 +1,5 @@
-FROM python:3.9-slim
+# no matter which version you choose 3.9.x -> always will be 3.9,2
+FROM python:3.9.2-slim
 
 ENV PYTHONUNBUFFERED 1
 ENV PYTHONDONTWRITEBYTECODE 1
