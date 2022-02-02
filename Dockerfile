@@ -16,8 +16,6 @@ COPY .env ./
 RUN pip install poetry==1.1 && \
     poetry config virtualenvs.in-project true && \
     poetry install --no-dev
-    # && apt purge -y netcat gcc python3-dev \
-    # && apt clean -y && apt autoremove -y \
 
 COPY . ./
 
