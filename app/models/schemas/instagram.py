@@ -17,6 +17,7 @@ class InstMediaTypes(int, Enum):
 
 class Audience(Enum):
     BESTIE = 'besties'
+    ALL = 'ALL'
 
 
 class Location(BaseModel):
@@ -38,7 +39,7 @@ class Story(BaseModel):
     height: int
     width: int
     location: Optional[List[Location]]
-    mentions: List[int]
+    mentions: Optional[List[int]]
 
 
 class HighlightItemPreview(BaseModel):
@@ -54,7 +55,7 @@ class User(BaseModel):
     username: str
     full_name: str
     profile_img: str
-    profile_info: str
+    profile_info: Optional[str]
     is_private: bool
     is_verified: bool
     follower_count: int
@@ -67,7 +68,7 @@ class PostPhotoObject(BaseModel):
     height: int
     width: int
     content_url: str
-    mentions: List[int]
+    mentions: Optional[List[int]]
 
 
 class PostVideoObject(BaseModel):

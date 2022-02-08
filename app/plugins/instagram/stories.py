@@ -12,29 +12,29 @@ def stories_raw_to_object(story_dict: dict) -> Story:
 
     # optional params
     if 'audience' in story_dict:
-        object['audience'] = story_dict['audience']
+        if object['audience']:
+            object['audience'] = story_dict['audience']
 
     if 'imported_taken_at' in story_dict:
         object['original_created_at'] = story_dict['imported_taken_at']
 
     mentions = []
     if 'reel_mentions' in story_dict:
-
         for mention in story_dict['reel_mentions']:
             mentions.append(mention['user']['pk'])
-    object['mentions'] = mentions
+        object['mentions'] = mentions
 
     if 'story_locations' in story_dict:
         locations = []
         for location in story_dict['story_locations']:
             location_dict = location['location']
-            location = {
-                'name': location_dict['name'],
-                'lat': location_dict['lat'],
-                'lng': location_dict['lng']}
+            location = {'name': location_dict['name']}
+            if 'lat' in location_dict and 'lng' in location_dict:
+                location.update({'lat': location_dict['lat'],
+                                 'lng': location_dict['lng']})
             locations.append(location)
-
-        object['location'] = locations
+        if locations:
+            object['location'] = locations
 
     object['type'] = story_dict['media_type']
 

@@ -1,6 +1,7 @@
 from typing import Union
 
 from instagram_private_api import MediaTypes
+from instagram_web_api.errors import ClientError
 
 from app.models.schemas.instagram import Story, HighlightItemPreview
 from app.plugins.instagram.clients.private_api import private_api
@@ -63,11 +64,11 @@ def fetch_count_highlights(username: str) -> int:
     return len(all_highlights)
 
 
-def fetch_one_highlight(username: str, index: int) -> Union[Story, None]:
+def fetch_one_highlight(username: str, index: int) -> Story | None:
     user_pk = username_to_pk(username)
     all_highlights = private_api.highlights_user_feed(user_pk)['tray']
 
-    if len(all_highlights) < index:
+    if len(all_highlights) < index or not all_highlights:
         return None
 
     raw = all_highlights[index - 1]
@@ -78,24 +79,30 @@ def fetch_one_highlight(username: str, index: int) -> Union[Story, None]:
 
 # highlights by id
 
-def fetch_items_highlight_by_id(id: int) -> list[Story]:
-    highlight_reel_media = web_api.highlight_reel_media([id])
+def fetch_items_highlight_by_id(id: int) -> list[Story] | None:
+    try:
+        highlight_reel_media = web_api.highlight_reel_media([id])
 
-    for highlight in highlight_reel_media['data']['reels_media']:
-        items = highlight_items_raw_to_object(highlight['items'])
+        for highlight in highlight_reel_media['data']['reels_media']:
+            items = highlight_items_raw_to_object(highlight['items'])
 
-    return items[::-1]
+        return items[::-1]
+    except ClientError:
+        return None
 
 
-def fetch_highlight_item_by_id(id: int, index: int) -> Story:
+def fetch_highlight_item_by_id(id: int, index: int) -> Story | None:
     stories = fetch_items_highlight_by_id(id)
 
-    if len(stories) < index:
+    if not stories or len(stories) < index:
         return None
 
     return stories[index - 1]
 
 
-def fetch_count_highlight_by_id(id: int) -> int:
-    highlight_reel_media = web_api.highlight_reel_media([id])
-    return len(highlight_reel_media['data']['reels_media'][0]['items'])
+def fetch_count_highlight_by_id(id: int) -> int | None:
+    try:
+        highlight_reel_media = web_api.highlight_reel_media([id])
+        return len(highlight_reel_media['data']['reels_media'][0]['items'])
+    except ClientError:
+        return None

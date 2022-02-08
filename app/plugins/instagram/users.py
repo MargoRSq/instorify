@@ -11,7 +11,8 @@ def fetch_user_info(username: str) -> User:
     object['username'] = username
     object['full_name'] = user['full_name']
     object['profile_img'] = user['hd_profile_pic_url_info']['url']
-    object['profile_info'] = user['biography']
+    if user['biography']:
+        object['profile_info'] = user['biography']
     object['is_private'] = user['is_private']
     object['is_verified'] = user['is_verified']
     object['follower_count'] = user['follower_count']
