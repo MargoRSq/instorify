@@ -1,23 +1,33 @@
-# no matter which version you choose 3.9.x -> always will be 3.9,2
-FROM python:3.9.2-slim
+FROM python:3.10.2-alpine3.14 as requirements-stage
+
+WORKDIR /tmp
+
+RUN apk add --no-cache gcc musl-dev python3-dev libffi-dev openssl-dev
+
+RUN pip install poetry
+
+COPY ./pyproject.toml ./poetry.lock* /tmp/
+
+RUN poetry export -f requirements.txt --output requirements.txt --without-hashes
+
+FROM python:3.10.2-alpine3.14
 
 ENV PYTHONUNBUFFERED 1
 ENV PYTHONDONTWRITEBYTECODE 1
 
-EXPOSE 8000
-WORKDIR /app
+RUN apk add --no-cache gcc musl-dev python3-dev libffi-dev openssl-dev
 
-RUN apt-get update && \
-    apt-get install -y --no-install-recommends netcat gcc python3-dev \
-    && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
+WORKDIR /code
 
-COPY poetry.lock pyproject.toml ./
+COPY --from=requirements-stage /tmp/requirements.txt /code/requirements.txt
+
+RUN pip install --no-cache-dir --upgrade -r /code/requirements.txt
+
+RUN apk del gcc musl-dev python3-dev libffi-dev openssl-dev \
+    && rm -rf /var/lib/apk/lists/* /tmp/* /var/tmp/*
+
 COPY .env ./
+COPY ./app /code/app
+COPY ./cache /code/cache
 
-RUN pip install poetry==1.1 && \
-    poetry config virtualenvs.in-project true && \
-    poetry install --no-dev
-
-COPY . ./
-
-CMD poetry run uvicorn --host=0.0.0.0 app.main:app
+CMD ["uvicorn", "app.main:app", "--host", "0.0.0.0", "--port", "8000"]
