@@ -2,7 +2,7 @@ import codecs
 import json
 import os
 
-from typing import Dict
+from typing import Dict, NoReturn
 from app.core.config import INSTAGRAM_LOGIN, PLUGINS_ACCOUNTS_COOKIE_PATH
 
 COOCKIE_PATH_PRIVATE = PLUGINS_ACCOUNTS_COOKIE_PATH + f'/instagram_private_cookie_{INSTAGRAM_LOGIN}.json'
@@ -22,14 +22,14 @@ def from_json(json_object) -> Dict:
     return json_object
 
 
-def handle_login_private(api, PLUGINS_ACCOUNTS_COOKIE_PATH):
+def handle_login_private(api, PLUGINS_ACCOUNTS_COOKIE_PATH) -> NoReturn:
     if not os.path.isdir(PLUGINS_ACCOUNTS_COOKIE_PATH):
         os.mkdir(PLUGINS_ACCOUNTS_COOKIE_PATH)
     cache_settings = api.settings
     with open(COOCKIE_PATH_PRIVATE, 'w') as outfile:
         json.dump(cache_settings, outfile, default=to_json, indent='\t')
 
-def handle_login_web(api, PLUGINS_ACCOUNTS_COOKIE_PATH):
+def handle_login_web(api, PLUGINS_ACCOUNTS_COOKIE_PATH) -> NoReturn:
     if not os.path.isdir(PLUGINS_ACCOUNTS_COOKIE_PATH):
         os.mkdir(PLUGINS_ACCOUNTS_COOKIE_PATH)
     cache_settings = api.settings
