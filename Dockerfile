@@ -28,6 +28,7 @@ RUN apk del gcc musl-dev python3-dev libffi-dev openssl-dev \
 
 COPY .env ./
 COPY ./app /code/app
-COPY ./cache /code/cache
+# Only for local testing
+# COPY ./cache /code/cache
 
 CMD ["uvicorn", "app.main:app", "--host", "0.0.0.0", "--port", "8000"]
