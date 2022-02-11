@@ -31,6 +31,8 @@ async def get_count_highlights(username: str):
             summary='Get user highlight by index',
             response_model=HighlightItemPreview)
 async def get_highlight_by_index(username: str, highlight_index: int):
+    if highlight_index < 0:
+        raise_not_found('index')
     highlight = fetch_one_highlight(username, highlight_index)
 
     if highlight is None:

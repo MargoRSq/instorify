@@ -1,6 +1,7 @@
 from typing import List, Dict
 
 from instagram_private_api import MediaTypes
+from app.api.errors.instagram import raise_not_found
 
 from app.models.schemas.instagram import Story
 from app.plugins.instagram.clients.private_api import private_api
@@ -83,6 +84,8 @@ def fetch_count_stories(username: str) -> int:
 
 
 def fetch_one_story_by_index(username: str, index: int) -> Story | None:
+    if index < 0:
+        raise_not_found('index')
     stories = fetch_stories_raw(username)
 
     if len(stories) < index:
