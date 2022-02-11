@@ -1,3 +1,4 @@
+from typing import List
 from app.plugins.instagram.clients.private_api import private_api
 
 
@@ -14,7 +15,7 @@ def pk_to_username(pk_id: int) -> str:
 
 
 # fetching "following" accounts
-def fetch_following_pk(pk_id: int) -> list[int]:
+def fetch_following_pk(pk_id: int) -> List[int]:
 
     uuid = private_api.generate_uuid()
     results = private_api.user_following(pk_id, uuid)

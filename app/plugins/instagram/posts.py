@@ -1,10 +1,11 @@
+from typing import List, Dict
 from instagram_private_api import MediaTypes
 
 from app.plugins.instagram.clients.private_api import private_api
 from app.models.schemas.instagram import Post, PostPhotoObject, PostVideoObject, PostCarouselList
 
 
-def get_mentions(item: dict) -> list[int]:
+def get_mentions(item: Dict) -> List[int]:
     mentions = []
     if 'usertags' in item:
         for tag in item['usertags']['in']:
@@ -13,7 +14,7 @@ def get_mentions(item: dict) -> list[int]:
     return mentions
 
 
-def carousel_item(item: dict) -> PostCarouselList:
+def carousel_item(item: Dict) -> PostCarouselList:
     items = []
 
     for media in item['carousel_media']:
@@ -27,7 +28,7 @@ def carousel_item(item: dict) -> PostCarouselList:
     return items
 
 
-def video_item(item: dict) -> PostVideoObject:
+def video_item(item: Dict) -> PostVideoObject:
     obj = {}
     obj['type'] = MediaTypes.VIDEO
 
@@ -45,7 +46,7 @@ def video_item(item: dict) -> PostVideoObject:
     return obj
 
 
-def photo_item(item: dict) -> PostPhotoObject:
+def photo_item(item: Dict) -> PostPhotoObject:
     obj = {}
     obj['type'] = MediaTypes.PHOTO
 
@@ -73,7 +74,7 @@ def photo_item(item: dict) -> PostPhotoObject:
     return obj
 
 
-def post_items_raw_to_object(items: list) -> list[Post]:
+def post_items_raw_to_object(items: List) -> List[Post]:
     objs = []
 
     for item in items:
@@ -117,6 +118,6 @@ def fetch_count_posts(username: str) -> int:
     return private_api.username_info(username)['user']['media_count']
 
 
-def fetch_posts(username: str, max_id: str) -> list[Post]:
+def fetch_posts(username: str, max_id: str) -> List[Post]:
     posts = private_api.username_feed(username, max_id=max_id)
     return post_items_raw_to_object(posts['items'])

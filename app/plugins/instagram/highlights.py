@@ -1,3 +1,4 @@
+from typing import List, Dict
 from instagram_private_api import MediaTypes
 from instagram_web_api.errors import ClientError
 
@@ -7,7 +8,7 @@ from app.plugins.instagram.clients.web_api import web_api
 from app.plugins.instagram.utils import username_to_pk
 
 
-def highlight_items_raw_to_object(items: list) -> list[Story]:
+def highlight_items_raw_to_object(items: List) -> List[Story]:
     objects = []
     for item in items:
         obj = {}
@@ -35,7 +36,7 @@ def highlight_items_raw_to_object(items: list) -> list[Story]:
     return objects
 
 
-def highlight_raw_to_object(raw: dict) -> HighlightItemPreview:
+def highlight_raw_to_object(raw: Dict) -> HighlightItemPreview:
     return {'id': int(raw['id'].split(':')[1]),
             'title': raw['title'],
             'created_at': raw['created_at'],
@@ -43,7 +44,7 @@ def highlight_raw_to_object(raw: dict) -> HighlightItemPreview:
             'preview_url': raw['cover_media']['cropped_image_version']['url']}
 
 
-def fetch_highlights(username: str) -> list[Story]:
+def fetch_highlights(username: str) -> List[Story]:
     user_pk = username_to_pk(username)
     all_highlights = private_api.highlights_user_feed(user_pk)['tray']
 

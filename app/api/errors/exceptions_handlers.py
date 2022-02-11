@@ -7,16 +7,16 @@ from starlette.exceptions import HTTPException as StarletteHTTPException
 from starlette.responses import JSONResponse
 
 
-def subscribe_exception_handlers(application: FastAPI):
+def subscribe_exception_handlers(application: FastAPI) -> JSONResponse:
     @application.exception_handler(ClientError)
     async def user_not_found_error(exc):
         if exc.msg == 'Not Found: user_not_found':
             return JSONResponse({'detail': 'user not found'}, status_code=404)
 
     @application.exception_handler(StarletteHTTPException)
-    async def custom_http_exception_handler(request, exc):
+    async def custom_http_exception_handler(request, exc) -> JSONResponse:
         return await http_exception_handler(request, exc)
 
     @application.exception_handler(RequestValidationError)
-    async def validation_exception_handler(request, exc):
+    async def validation_exception_handler(request, exc) -> JSONResponse:
         return await request_validation_exception_handler(request, exc)
