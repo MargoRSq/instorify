@@ -1,4 +1,4 @@
-from enum import Enum, IntEnum
+from enum import Enum
 from typing import List, Optional, Union
 
 from instagram_private_api import MediaTypes

@@ -9,7 +9,7 @@ from starlette.responses import JSONResponse
 
 def subscribe_exception_handlers(application: FastAPI):
     @application.exception_handler(ClientError)
-    async def custom_http_exception_handler(request, exc):
+    async def user_not_found_error(exc):
         if exc.msg == 'Not Found: user_not_found':
             return JSONResponse({'detail': 'user not found'}, status_code=404)
 
@@ -20,4 +20,3 @@ def subscribe_exception_handlers(application: FastAPI):
     @application.exception_handler(RequestValidationError)
     async def validation_exception_handler(request, exc):
         return await request_validation_exception_handler(request, exc)
-
