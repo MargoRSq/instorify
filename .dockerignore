@@ -1,0 +1,7 @@
+**.DS_Store
+**
+!.env
+!cache
+!app
+!poetry.lock
+!pyproject.toml

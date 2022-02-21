@@ -273,8 +273,8 @@ standard = ["websockets (>=9.1)", "httptools (>=0.2.0,<0.3.0)", "watchgod (>=0.6
 
 [metadata]
 lock-version = "1.1"
-python-versions = "3.10.1"
-content-hash = "2cbc6552b354d862a01c46cb3050d2c9e0e6ea6a5fc245b975a9fdee5a43e35f"
+python-versions = "^3.10.2"
+content-hash = "68662097d198dc808711350574ea1e693bed7c30a761957581f6c336cf1e8626"
 
 [metadata.files]
 aioredis = [
