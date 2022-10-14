@@ -9,7 +9,7 @@ API_VERSION = "0.1.1"
 API_PROJECT_NAME = "instorify-api"
 
 # in case of failed auth on instagram
-PLUGINS_ACCOUNTS_MAX_RETRY = 5
+PLUGINS_ACCOUNTS_MAX_RETRY = 2
 PLUGINS_ACCOUNTS_COOKIE_PATH = os.path.join(os.getcwd(), 'cache')
 
 config = Config(".env")

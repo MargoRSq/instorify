@@ -4,7 +4,7 @@ FROM python:3.9.2-slim
 ENV PYTHONUNBUFFERED 1
 ENV PYTHONDONTWRITEBYTECODE 1
 
-EXPOSE 8000
+EXPOSE 8001
 WORKDIR /app
 
 RUN apt-get update && \
@@ -20,4 +20,4 @@ RUN pip install poetry==1.1 && \
 
 COPY . ./
 
-CMD poetry run uvicorn --host=0.0.0.0 app.main:app
+CMD poetry run uvicorn --host=0.0.0.0  app.main:app

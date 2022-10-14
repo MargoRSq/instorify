@@ -15,7 +15,7 @@ FROM python:3.10.2-alpine3.14
 ENV PYTHONUNBUFFERED 1
 ENV PYTHONDONTWRITEBYTECODE 1
 
-RUN apk add --no-cache gcc musl-dev python3-dev libffi-dev openssl-dev
+RUN apk add --no-cache gcc musl-dev python3-dev libffi-dev openssl-dev 
 
 WORKDIR /code
 
@@ -31,4 +31,4 @@ COPY ./app /code/app
 # Only for local testing
 # COPY ./cache /code/cache
 
-CMD ["uvicorn", "app.main:app", "--host", "0.0.0.0", "--port", "8000"]
+CMD ["uvicorn", "app.main:app", "--host", "0.0.0.0", "--port", "8001"]

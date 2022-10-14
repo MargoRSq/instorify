@@ -13,7 +13,8 @@ router = APIRouter()
 
 @router.get('/{username}/stories', response_model=List[Story], summary='Get all user stories')
 async def get_all_stories(username: str):
-    return fetch_stories(username)
+    stories = fetch_stories(username)
+    return stories
 
 
 @router.get('/{username}/stories/count', response_model=int, summary='Get count of user stories')
