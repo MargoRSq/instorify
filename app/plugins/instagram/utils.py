@@ -1,3 +1,4 @@
+from typing import List
 from app.plugins.instagram.clients.private_api import private_api
 
 
@@ -8,16 +9,16 @@ def username_to_pk(username: str) -> int:
 
 
 # instagram id(pk) to instagram username
-def pk_to_username(pk: int) -> str:
-    search_results = private_api.user_info(pk)
+def pk_to_username(pk_id: int) -> str:
+    search_results = private_api.user_info(pk_id)
     return search_results['user']['username']
 
 
 # fetching "following" accounts
-def fetch_following_pk(pk: int) -> list[int]:
+def fetch_following_pk(pk_id: int) -> List[int]:
 
     uuid = private_api.generate_uuid()
-    results = private_api.user_following(pk, uuid)
+    results = private_api.user_following(pk_id, uuid)
     followers = results['users']
 
     list_acconts_pk = []

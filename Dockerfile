@@ -1,3 +1,4 @@
+
 FROM python:3.10.2-alpine3.14 as requirements-stage
 
 WORKDIR /tmp
@@ -12,23 +13,25 @@ RUN poetry export -f requirements.txt --output requirements.txt --without-hashes
 
 FROM python:3.10.2-alpine3.14
 
+
 ENV PYTHONUNBUFFERED 1
 ENV PYTHONDONTWRITEBYTECODE 1
 
-RUN apk add --no-cache gcc musl-dev python3-dev libffi-dev openssl-dev
 
-WORKDIR /code
+EXPOSE 8000
+WORKDIR /app
 
-COPY --from=requirements-stage /tmp/requirements.txt /code/requirements.txt
+RUN apt-get update && \
+    apt-get install -y --no-install-recommends netcat gcc python3-dev \
+    && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
 
-RUN pip install --no-cache-dir --upgrade -r /code/requirements.txt
-
-RUN apk del gcc musl-dev python3-dev libffi-dev openssl-dev \
-    && rm -rf /var/lib/apk/lists/* /tmp/* /var/tmp/*
-
+COPY poetry.lock pyproject.toml ./
 COPY .env ./
-COPY ./app /code/app
-# Only for local testing
-# COPY ./cache /code/cache
 
-CMD ["uvicorn", "app.main:app", "--host", "0.0.0.0", "--port", "8000"]
+RUN pip install poetry==1.1 && \
+    poetry config virtualenvs.in-project true && \
+    poetry install --no-dev
+
+COPY . ./
+
+CMD poetry run uvicorn --host=0.0.0.0 app.main:app

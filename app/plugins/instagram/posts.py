@@ -1,10 +1,11 @@
+from typing import List, Dict
 from instagram_private_api import MediaTypes
 
 from app.plugins.instagram.clients.private_api import private_api
 from app.models.schemas.instagram import Post, PostPhotoObject, PostVideoObject, PostCarouselList
 
 
-def get_mentions(item: dict) -> list[int]:
+def get_mentions(item: Dict) -> List[int]:
     mentions = []
     if 'usertags' in item:
         for tag in item['usertags']['in']:
@@ -13,71 +14,71 @@ def get_mentions(item: dict) -> list[int]:
     return mentions
 
 
-def carousel_item(item: dict) -> PostCarouselList:
+def carousel_item(item: Dict) -> PostCarouselList:
     items = []
 
     for media in item['carousel_media']:
-        object = {}
+        obj = {}
         if media['media_type'] == MediaTypes.VIDEO:
-            object.update(video_item(media))
+            obj.update(video_item(media))
         elif media['media_type'] == MediaTypes.PHOTO:
-            object.update(photo_item(media))
-        items.append(object)
+            obj.update(photo_item(media))
+        items.append(obj)
 
     return items
 
 
-def video_item(item: dict) -> PostVideoObject:
-    object = {}
-    object['type'] = MediaTypes.VIDEO
+def video_item(item: Dict) -> PostVideoObject:
+    obj = {}
+    obj['type'] = MediaTypes.VIDEO
 
-    object['content_url'] = item['video_versions'][0]['url']
-    object['height'] = item['video_versions'][0]['height']
-    object['width'] = item['video_versions'][0]['width']
+    obj['content_url'] = item['video_versions'][0]['url']
+    obj['height'] = item['video_versions'][0]['height']
+    obj['width'] = item['video_versions'][0]['width']
 
-    object['duration'] = item['video_duration']
+    obj['duration'] = item['video_duration']
 
     if 'view_count' in item:
-        object['view_count'] = item['view_count']
+        obj['view_count'] = item['view_count']
 
-    object['mentions'] = get_mentions(item)
+    obj['mentions'] = get_mentions(item)
 
-    return object
+    return obj
 
 
-def photo_item(item: dict) -> PostPhotoObject:
-    object = {}
-    object['type'] = MediaTypes.PHOTO
+def photo_item(item: Dict) -> PostPhotoObject:
+    obj = {}
+    obj['type'] = MediaTypes.PHOTO
 
     height = None
     width = None
     if 'original_height' in item:
         height = item['original_height']
-        object['height'] = height
+        obj['height'] = height
     if 'original_width' in item:
         width = item['original_width']
-        object['width'] = width
+        obj['width'] = width
 
     if height and width:
         for image in item['image_versions2']['candidates']:
             if height == image['height'] and width == image['width']:
-                object['content_url'] = image['url']
+                obj['content_url'] = image['url']
     else:
         max_height = 0
         for image in item['image_versions2']['candidates']:
             if height > max_height:
-                object['content_url'] = image['url']
+                obj['content_url'] = image['url']
 
-    object['mentions'] = get_mentions(item)
+    obj['mentions'] = get_mentions(item)
 
-    return object
+    return obj
 
 
-def post_items_raw_to_object(items: list) -> list[Post]:
-    objects = []
+def post_items_raw_to_object(items: List) -> List[Post]:
+    objs = []
 
     for item in items:
-        object = {}
+        obj = {}
 
         if 'location' in item:
             location_dict = item['location']
@@ -89,34 +90,34 @@ def post_items_raw_to_object(items: list) -> list[Post]:
                 location['lat'] = location_dict['lat']
                 location['lng'] = location_dict['lng']
 
-            object['location'] = location
+            obj['location'] = location
 
-        object['created_at'] = item['taken_at']
+        obj['created_at'] = item['taken_at']
 
-        object['like_count'] = item['like_count']
-        object['id'] = item['id']
+        obj['like_count'] = item['like_count']
+        obj['id'] = item['id']
 
         if item['media_type'] == MediaTypes.VIDEO:
-            object['type'] = MediaTypes.VIDEO
-            object['items'] = [video_item(item)]
+            obj['type'] = MediaTypes.VIDEO
+            obj['items'] = [video_item(item)]
 
         elif item['media_type'] == MediaTypes.CAROUSEL:
-            object['type'] = MediaTypes.CAROUSEL
-            object['items'] = carousel_item(item)
+            obj['type'] = MediaTypes.CAROUSEL
+            obj['items'] = carousel_item(item)
 
         elif item['media_type'] == MediaTypes.PHOTO:
-            object['type'] = MediaTypes.PHOTO
-            object['items'] = [photo_item(item)]
+            obj['type'] = MediaTypes.PHOTO
+            obj['items'] = [photo_item(item)]
 
-        objects.append(object)
+        objs.append(obj)
 
-    return objects
+    return objs
 
 
 def fetch_count_posts(username: str) -> int:
     return private_api.username_info(username)['user']['media_count']
 
 
-def fetch_posts(username: str, max_id: str) -> list[Post]:
+def fetch_posts(username: str, max_id: str) -> List[Post]:
     posts = private_api.username_feed(username, max_id=max_id)
     return post_items_raw_to_object(posts['items'])

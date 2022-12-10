@@ -5,7 +5,7 @@ from app.api.routes.api import router
 from app.core.config import API_DOCS_URL, API_PROJECT_NAME,  API_REDOC_URL, API_VERSION
 from app.api.errors.exceptions_handlers import subscribe_exception_handlers
 
-origins_regex = r'http(s?)://localhost:3000'
+ORIGIN_REGEX = r'http(s?)://localhost:3000'
 
 
 def get_application() -> FastAPI:
@@ -14,7 +14,7 @@ def get_application() -> FastAPI:
 
     application.add_middleware(
         CORSMiddleware,
-        allow_origin_regex=origins_regex,
+        allow_origin_regex=ORIGIN_REGEX,
         allow_credentials=True,
         allow_methods=["*"],
         )

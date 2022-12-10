@@ -14,23 +14,25 @@ router = APIRouter()
 
 
 @router.get('/{username}/highlights',
-            response_model=List[HighlightItemPreview],
-            summary='Get all user highlights')
+            summary='Get all user highlights',
+            response_model=List[HighlightItemPreview])
 async def get_all_highlights(username: str):
     return fetch_highlights(username)
 
 
 @router.get('/{username}/highlights/count',
-            response_model=int,
-            summary='Get count of user highlights')
+            summary='Get count of user highlights',
+            response_model=int)
 async def get_count_highlights(username: str):
     return fetch_count_highlights(username)
 
 
 @router.get('/{username}/highlights/{highlight_index}',
-            response_model=HighlightItemPreview,
-            summary='Get user highlight by index')
+            summary='Get user highlight by index',
+            response_model=HighlightItemPreview)
 async def get_highlight_by_index(username: str, highlight_index: int):
+    if highlight_index < 0:
+        raise_not_found('index')
     highlight = fetch_one_highlight(username, highlight_index)
 
     if highlight is None:
@@ -40,22 +42,32 @@ async def get_highlight_by_index(username: str, highlight_index: int):
 
 
 @router.get('/{username}/highlights/items/{highlight_id}',
-            response_model=List[Story],
-            summary='Get user highlight by id')
+            summary='Get user highlight by id',
+            response_model=List[Story])
 async def get_highlight_by_id(highlight_id: int):
-    return fetch_items_highlight_by_id(highlight_id)
+    highlight = fetch_items_highlight_by_id(highlight_id)
+
+    if highlight is None:
+        raise_not_found('highlight')
+
+    return highlight
 
 
 @router.get('/{username}/highlights/items/{highlight_id}/count',
-            response_model=int,
-            summary='Get count of user highlight by id')
+            summary='Get count of user highlight by id',
+            response_model=int)
 async def get_count_highlight_by_id(highlight_id: int):
+    highlight = fetch_count_highlight_by_id(highlight_id)
+
+    if highlight is None:
+        raise_not_found('highlight')
+
     return fetch_count_highlight_by_id(highlight_id)
 
 
 @router.get('/{username}/highlights/items/{highlight_id}/{index_media}',
-            response_model=Story,
-            summary='Get story by index from highlight')
+            summary='Get story by index from highlight',
+            response_model=Story)
 async def get_highlight_item_by_id(highlight_id: int, index_media: int):
     highlight = fetch_highlight_item_by_id(highlight_id, index_media)
 
