@@ -2,9 +2,9 @@ from typing import List
 
 from fastapi import APIRouter
 
-from app.api.errors.instagram import raise_not_found
-from app.models.schemas.instagram import Story
-from app.plugins.instagram.stories import (fetch_count_stories,
+from api.errors.instagram import raise_not_found
+from models.schemas.instagram import Story
+from plugins.instagram.stories import (fetch_count_stories,
                                            fetch_one_story_by_index,
                                            fetch_stories)
 

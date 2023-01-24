@@ -6,10 +6,10 @@ from instagram_private_api import (Client, ClientCookieExpiredError,
                                    ClientError, ClientLoginError,
                                    ClientThrottledError)
 
-from app.plugins.instagram.clients.utils import (COOCKIE_PATH_PRIVATE,
+from plugins.instagram.clients.utils import (COOCKIE_PATH_PRIVATE,
                                              from_json,
                                              handle_login_private)
-from app.core.config import (INSTAGRAM_LOGIN,
+from core.config import (INSTAGRAM_LOGIN,
                          INSTAGRAM_PASS,
                          PLUGINS_ACCOUNTS_MAX_RETRY,
                          PLUGINS_ACCOUNTS_COOKIE_PATH)
