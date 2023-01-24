@@ -3,7 +3,7 @@ import json
 import os
 
 from typing import Dict, NoReturn
-from app.core.config import INSTAGRAM_LOGIN, PLUGINS_ACCOUNTS_COOKIE_PATH
+from core.config import INSTAGRAM_LOGIN, PLUGINS_ACCOUNTS_COOKIE_PATH
 
 COOCKIE_PATH_PRIVATE = PLUGINS_ACCOUNTS_COOKIE_PATH + f'/instagram_private_cookie_{INSTAGRAM_LOGIN}.json'
 COOCKIE_PATH_WEB = PLUGINS_ACCOUNTS_COOKIE_PATH + f'/instagram_web_cookie_{INSTAGRAM_LOGIN}.json'

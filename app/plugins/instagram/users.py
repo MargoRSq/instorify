@@ -1,5 +1,5 @@
-from app.models.schemas.instagram import User
-from app.plugins.instagram.clients.private_api import private_api
+from models.schemas.instagram import User
+from plugins.instagram.clients.private_api import private_api
 
 
 def fetch_user_info(username: str) -> User:

@@ -1,7 +1,7 @@
 from fastapi import APIRouter
 
-from app.models.schemas.instagram import Post
-from app.plugins.instagram.posts import fetch_posts, fetch_count_posts
+from models.schemas.instagram import Post
+from plugins.instagram.posts import fetch_posts, fetch_count_posts
 
 
 router = APIRouter()
