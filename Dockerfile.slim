@@ -1,18 +1,5 @@
-
-FROM python:3.10.2-alpine3.14 as requirements-stage
-
-WORKDIR /tmp
-
-RUN apk add --no-cache gcc musl-dev python3-dev libffi-dev openssl-dev
-
-RUN pip install poetry
-
-COPY ./pyproject.toml ./poetry.lock* /tmp/
-
-RUN poetry export -f requirements.txt --output requirements.txt --without-hashes
-
-FROM python:3.10.2-alpine3.14
-
+# no matter which version you choose 3.9.x -> always will be 3.9,2
+FROM python:3.9.2-slim
 
 ENV PYTHONUNBUFFERED 1
 ENV PYTHONDONTWRITEBYTECODE 1
