@@ -1,9 +1,9 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
-from app.api.routes.api import router
-from app.core.config import API_DOCS_URL, API_PROJECT_NAME,  API_REDOC_URL, API_VERSION
-from app.api.errors.exceptions_handlers import subscribe_exception_handlers
+from api.routes.api import router
+from core.config import API_DOCS_URL, API_PROJECT_NAME,  API_REDOC_URL, API_VERSION
+from api.errors.exceptions_handlers import subscribe_exception_handlers
 
 ORIGIN_REGEX = r'http(s?)://localhost:3000'
 

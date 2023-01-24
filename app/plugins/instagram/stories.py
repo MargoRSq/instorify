@@ -1,11 +1,11 @@
 from typing import List, Dict
 
 from instagram_private_api import MediaTypes
-from app.api.errors.instagram import raise_not_found
+from api.errors.instagram import raise_not_found
 
-from app.models.schemas.instagram import Story
-from app.plugins.instagram.clients.private_api import private_api
-from app.plugins.instagram.utils import username_to_pk
+from models.schemas.instagram import Story
+from plugins.instagram.clients.private_api import private_api
+from plugins.instagram.utils import username_to_pk
 
 
 def stories_raw_to_object(story_dict: Dict) -> Story:

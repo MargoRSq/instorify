@@ -1,5 +1,5 @@
 from typing import List
-from app.plugins.instagram.clients.private_api import private_api
+from plugins.instagram.clients.private_api import private_api
 
 
 # getting pk(id) of instagram account from username

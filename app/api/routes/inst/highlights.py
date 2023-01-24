@@ -1,9 +1,9 @@
 from typing import List
 from fastapi import APIRouter
 
-from app.api.errors.instagram import raise_not_found
-from app.models.schemas.instagram import HighlightItemPreview, Story
-from app.plugins.instagram.highlights import (fetch_count_highlight_by_id,
+from api.errors.instagram import raise_not_found
+from models.schemas.instagram import HighlightItemPreview, Story
+from plugins.instagram.highlights import (fetch_count_highlight_by_id,
                                               fetch_count_highlights,
                                               fetch_highlight_item_by_id,
                                               fetch_highlights,
